@@ -1,12 +1,19 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
 
 export default createStore({
   state: {
+    appTheme: 'theme-light',
   },
   mutations: {
+    setAppTheme(state, appTheme) {
+      state.appTheme = appTheme;
+    },
   },
-  actions: {
+  getters: {
+    appTheme(state) {
+      return state.appTheme;
+    },
   },
-  modules: {
-  }
-})
+  actions: {},
+  modules: {},
+});

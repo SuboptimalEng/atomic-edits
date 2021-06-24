@@ -3,3 +3,18 @@
 @tailwind components;
 
 @tailwind utilities;
+
+@layer base {
+  .theme-light {
+    --primary: #f3f4f6;
+    --secondary: #111827;
+  }
+  .theme-dark {
+    --primary: #111827;
+    --secondary: #f3f4f6;
+  }
+  .theme-dracula {
+    --primary: #282a36;
+    --secondary: #f8f8f2;
+  }
+}

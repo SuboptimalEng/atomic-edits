@@ -1,26 +1,36 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div :class="appTheme">
+    <div
+      class="
+        font-sans
+        antialiased
+        min-h-screen
+        border
+        bg-primary
+        text-secondary
+      "
+    >
+      <div class="border m-4 absolute top-0 bottom-0 left-0 right-0">
+        <VideoEditor></VideoEditor>
+        <Settings></Settings>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Settings from './components/Settings.vue';
+import VideoEditor from './components/VideoEditor.vue';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
-}
+    Settings,
+    VideoEditor,
+  },
+  computed: {
+    ...mapGetters(['appTheme']),
+  },
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
