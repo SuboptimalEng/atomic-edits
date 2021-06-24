@@ -11,8 +11,14 @@
       "
     >
       <div class="border m-4 absolute top-0 bottom-0 left-0 right-0">
-        <VideoEditor></VideoEditor>
-        <Settings></Settings>
+        <div class="grid grid-cols-3 h-full">
+          <div class="col-span-2 border h-full">
+            <VideoEditor></VideoEditor>
+          </div>
+          <div class="col-span-1 border">
+            <Settings></Settings>
+          </div>
+        </div>
       </div>
     </div>
   </div>
