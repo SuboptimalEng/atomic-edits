@@ -19,7 +19,7 @@ async function createWindow() {
     height: 1200,
     webPreferences: {
       // Required for Spectron testing
-      enableRemoteModule: !!process.env.IS_TEST,
+      // enableRemoteModule: !!process.env.IS_TEST,
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,

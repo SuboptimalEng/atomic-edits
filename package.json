@@ -14,7 +14,11 @@
   },
   "main": "background.js",
   "dependencies": {
+    "@tailwindcss/postcss7-compat": "^2.0.2",
+    "autoprefixer": "^9",
     "core-js": "^3.6.5",
+    "postcss": "^7",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
     "vuex": "^4.0.0-0"
   },
@@ -34,6 +38,7 @@
     "spectron": "14.0.0",
     "typescript": "~3.9.3",
     "vue-cli-plugin-electron-builder": "~2.1.0",
+    "vue-cli-plugin-tailwind": "~2.0.6",
     "vue-jest": "^5.0.0-0"
   }
 }
