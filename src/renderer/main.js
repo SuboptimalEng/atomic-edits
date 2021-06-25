@@ -3,6 +3,12 @@ import App from './App.vue';
 import store from './store';
 import './assets/tailwind.css';
 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCog, faVideo } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+
+library.add(faCog, faVideo);
+
 // INSIGHT: Add vue directive when clicked outside
 // INSIGHT: Useful in dropdown options toggle...
 const clickOutside = {
@@ -24,5 +30,6 @@ const clickOutside = {
 
 createApp(App)
   .use(store)
+  .component('fa', FontAwesomeIcon)
   .directive('click-outside', clickOutside)
   .mount('#app');

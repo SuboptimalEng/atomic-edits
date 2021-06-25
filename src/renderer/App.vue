@@ -10,15 +10,29 @@
         text-secondary
       "
     >
-      <div class="border m-4 absolute top-0 bottom-0 left-0 right-0">
-        <div class="grid grid-cols-3 h-full">
-          <div class="col-span-2 border h-full">
-            <VideoEditor></VideoEditor>
-          </div>
-          <div class="col-span-1 border">
-            <Settings></Settings>
+      <div class="border m-4 absolute top-0 bottom-48 left-0 right-0">
+        <div class="absolute border top-0 bottom-0 left-0 right-80">
+          <VideoEditor></VideoEditor>
+        </div>
+        <div class="absolute top-0 bottom-0 right-16 w-64 border">
+          <Settings></Settings>
+        </div>
+        <div class="absolute top-0 bottom-0 right-0 w-16 border text-3xl">
+          <div class="flex flex-col justify-between">
+            <div class="flex flex-col">
+              <div class="px-4 py-2 hover:bg-secondary hover:text-primary">
+                <fa icon="video" />
+              </div>
+              <div class="px-4 py-2 hover:bg-secondary hover:text-primary">
+                <fa icon="cog" />
+              </div>
+            </div>
           </div>
         </div>
+      </div>
+
+      <div class="border m-4 absolute bottom-0 right-0 left-0 h-48">
+        <div>Wave Surfer</div>
       </div>
     </div>
   </div>
