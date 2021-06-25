@@ -2,7 +2,7 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    appTheme: 'theme-light',
+    appTheme: 'theme-dark',
   },
   mutations: {
     setAppTheme(state, appTheme) {

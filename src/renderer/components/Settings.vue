@@ -1,15 +1,15 @@
 <template>
   <div>
     <div>Settings</div>
-    <div class="relative">
-      <BaseButton @click="toggleShowThemeSelection">Themes</BaseButton>
+    <div class="relative" v-click-outside="hideThemeSelection">
+      <BaseButton @click="toggleThemeSelection">Themes</BaseButton>
       <div v-if="showThemeSelection" class="absolute">
         <div
           v-for="theme in themes"
           :key="theme"
           @click="
             setAppTheme(theme);
-            toggleShowThemeSelection();
+            hideThemeSelection();
           "
         >
           {{ theme }}
@@ -36,7 +36,12 @@ export default {
   },
   methods: {
     ...mapMutations(['setAppTheme']),
-    toggleShowThemeSelection() {
+
+    hideThemeSelection() {
+      this.showThemeSelection = false;
+    },
+
+    toggleThemeSelection() {
       this.showThemeSelection = !this.showThemeSelection;
     },
   },
