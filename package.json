@@ -20,10 +20,12 @@
     "@tailwindcss/postcss7-compat": "^2.0.2",
     "autoprefixer": "^9",
     "core-js": "^3.6.5",
+    "lodash": "^4.17.21",
     "postcss": "^7",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
     "vue": "^3.0.0",
-    "vuex": "^4.0.0-0"
+    "vuex": "^4.0.0-0",
+    "wavesurfer.js": "^5.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
