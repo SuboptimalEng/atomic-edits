@@ -43,13 +43,14 @@
       </div>
 
       <div class="border m-4 absolute bottom-0 right-0 left-0 h-60">
-        <div>Wave Surfer</div>
+        <WaveSurfer></WaveSurfer>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import WaveSurfer from './components/WaveSurfer.vue';
 import VideoDisplay from './components/VideoDisplay.vue';
 import GlobalSettings from './components/GlobalSettings.vue';
 import WaveSurferSettings from './components/WaveSurferSettings.vue';
@@ -58,6 +59,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'App',
   components: {
+    WaveSurfer,
     VideoDisplay,
     GlobalSettings,
     WaveSurferSettings,

@@ -15,8 +15,8 @@
       <div v-else class="h-full">
         <video
           :src="fileUrl"
+          id="videoDisplayElement"
           type="video/mp4,audio/mp3"
-          ref="editableVideo"
           class="h-full focus:outline-none"
           controls
         ></video>
