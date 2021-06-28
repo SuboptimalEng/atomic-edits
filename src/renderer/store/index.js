@@ -6,10 +6,18 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
+    fileUrl: '',
+    filePath: '',
     activeTheme: 'theme-dark',
     activeSetting: 'wave-surfer-settings',
   },
   mutations: {
+    setFileUrl(state, fileUrl) {
+      state.fileUrl = fileUrl;
+    },
+    setFilePath(state, filePath) {
+      state.filePath = filePath;
+    },
     setActiveTheme(state, activeTheme) {
       state.activeTheme = activeTheme;
     },
@@ -18,6 +26,12 @@ export default createStore({
     },
   },
   getters: {
+    fileUrl(state) {
+      return state.fileUrl;
+    },
+    filePath(state) {
+      return state.filePath;
+    },
     activeTheme(state) {
       return state.activeTheme;
     },

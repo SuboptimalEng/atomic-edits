@@ -10,7 +10,7 @@
         text-secondary
       "
     >
-      <div class="border m-4 absolute top-0 bottom-48 left-0 right-0">
+      <div class="border m-4 absolute top-0 bottom-60 left-0 right-0">
         <div class="absolute border top-0 bottom-0 left-0 right-80">
           <VideoDisplay></VideoDisplay>
         </div>
@@ -42,7 +42,7 @@
         </div>
       </div>
 
-      <div class="border m-4 absolute bottom-0 right-0 left-0 h-48">
+      <div class="border m-4 absolute bottom-0 right-0 left-0 h-60">
         <div>Wave Surfer</div>
       </div>
     </div>
