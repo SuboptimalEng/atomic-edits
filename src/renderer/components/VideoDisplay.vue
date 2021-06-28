@@ -17,7 +17,7 @@
           :src="fileUrl"
           type="video/mp4,audio/mp3"
           ref="editableVideo"
-          class="h-full"
+          class="h-full focus:outline-none"
           controls
         ></video>
       </div>
