@@ -1,17 +1,28 @@
 import { createStore } from 'vuex';
 
+// TODO: Refactor this
+// const availableThemes = ['theme-dark', 'theme-light', 'theme-dracula'];
+// const availableSettings = ['wave-surfer-settings', 'global-settings'];
+
 export default createStore({
   state: {
-    appTheme: 'theme-dark',
+    activeTheme: 'theme-dark',
+    activeSetting: 'wave-surfer-settings',
   },
   mutations: {
-    setAppTheme(state, appTheme) {
-      state.appTheme = appTheme;
+    setActiveTheme(state, activeTheme) {
+      state.activeTheme = activeTheme;
+    },
+    setActiveSetting(state, activeSetting) {
+      state.activeSetting = activeSetting;
     },
   },
   getters: {
-    appTheme(state) {
-      return state.appTheme;
+    activeTheme(state) {
+      return state.activeTheme;
+    },
+    activeSetting(state) {
+      return state.activeSetting;
     },
   },
   actions: {},

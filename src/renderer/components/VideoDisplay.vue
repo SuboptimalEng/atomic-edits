@@ -1,9 +1,9 @@
 <template>
-  <div>Video Editor</div>
+  <div>Video Display</div>
 </template>
 
 <script>
 export default {
-  name: 'VideoEditor',
+  name: 'VideoDisplay',
 };
 </script>

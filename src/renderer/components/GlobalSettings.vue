@@ -8,7 +8,7 @@
           v-for="theme in themes"
           :key="theme"
           @click="
-            setAppTheme(theme);
+            setActiveTheme(theme);
             hideThemeSelection();
           "
         >
@@ -35,7 +35,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations(['setAppTheme']),
+    ...mapMutations(['setActiveTheme']),
 
     hideThemeSelection() {
       this.showThemeSelection = false;

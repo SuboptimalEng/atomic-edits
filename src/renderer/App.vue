@@ -1,5 +1,5 @@
 <template>
-  <div :class="appTheme">
+  <div :class="activeTheme">
     <div
       class="
         font-sans
@@ -12,20 +12,33 @@
     >
       <div class="border m-4 absolute top-0 bottom-48 left-0 right-0">
         <div class="absolute border top-0 bottom-0 left-0 right-80">
-          <VideoEditor></VideoEditor>
+          <VideoDisplay></VideoDisplay>
         </div>
         <div class="absolute top-0 bottom-0 right-16 w-64 border">
-          <Settings></Settings>
+          <GlobalSettings
+            v-if="activeSetting === 'global-settings'"
+          ></GlobalSettings>
+          <WaveSurferSettings
+            v-if="activeSetting === 'wave-surfer-settings'"
+          ></WaveSurferSettings>
         </div>
+
         <div class="absolute top-0 bottom-0 right-0 w-16 border text-3xl">
           <div class="flex flex-col justify-between">
             <div class="flex flex-col">
-              <div class="px-4 py-2 hover:bg-secondary hover:text-primary">
-                <fa icon="video" />
-              </div>
-              <div class="px-4 py-2 hover:bg-secondary hover:text-primary">
-                <fa icon="cog" />
-              </div>
+              <button
+                v-for="setting in availableSettings"
+                :key="setting.section"
+                class="
+                  px-4
+                  py-2
+                  focus:bg-secondary
+                  focus:text-primary
+                  focus:outline-none
+                "
+              >
+                <fa :icon="setting.icon" />
+              </button>
             </div>
           </div>
         </div>
@@ -39,18 +52,35 @@
 </template>
 
 <script>
-import Settings from './components/Settings.vue';
-import VideoEditor from './components/VideoEditor.vue';
+import VideoDisplay from './components/VideoDisplay.vue';
+import GlobalSettings from './components/GlobalSettings.vue';
+import WaveSurferSettings from './components/WaveSurferSettings.vue';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'App',
   components: {
-    Settings,
-    VideoEditor,
+    VideoDisplay,
+    GlobalSettings,
+    WaveSurferSettings,
+  },
+  data() {
+    return {
+      availableSettings: [
+        {
+          // TODO: Refactor settings.
+          setting: 'wave-surfer-settings',
+          icon: 'video',
+        },
+        {
+          setting: 'global-settings',
+          icon: 'cog',
+        },
+      ],
+    };
   },
   computed: {
-    ...mapGetters(['appTheme']),
+    ...mapGetters(['activeTheme', 'activeSetting']),
   },
 };
 </script>
