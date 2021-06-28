@@ -29,13 +29,13 @@
               <button
                 v-for="setting in availableSettings"
                 :key="setting.section"
-                class="
-                  px-4
-                  py-2
-                  focus:bg-secondary
-                  focus:text-primary
-                  focus:outline-none
-                "
+                class="px-4 py-2 focus:outline-none"
+                :class="[
+                  activeSetting === setting.section
+                    ? 'bg-secondary text-primary'
+                    : 'hover:bg-primary-hover',
+                ]"
+                @click="setActiveSetting(setting.section)"
               >
                 <fa :icon="setting.icon" />
               </button>
@@ -55,7 +55,7 @@
 import VideoDisplay from './components/VideoDisplay.vue';
 import GlobalSettings from './components/GlobalSettings.vue';
 import WaveSurferSettings from './components/WaveSurferSettings.vue';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   name: 'App',
@@ -69,15 +69,20 @@ export default {
       availableSettings: [
         {
           // TODO: Refactor settings.
-          setting: 'wave-surfer-settings',
+          section: 'wave-surfer-settings',
+          isActive: true,
           icon: 'video',
         },
         {
-          setting: 'global-settings',
+          section: 'global-settings',
+          isActive: false,
           icon: 'cog',
         },
       ],
     };
+  },
+  methods: {
+    ...mapMutations(['setActiveSetting']),
   },
   computed: {
     ...mapGetters(['activeTheme', 'activeSetting']),
