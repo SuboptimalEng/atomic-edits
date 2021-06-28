@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col border h-full">
-    <div class="flex justify-between text-3xl border w-full">
+    <div class="flex justify-between text-3xl w-full">
       <div class="flex place-items-center">
         <button
           v-for="option in waveSurferOptions"
@@ -30,9 +30,9 @@ export default {
     return {
       waveSurfer: null,
       waveSurferOptions: [
-        { icon: 'backward' },
+        { icon: 'step-backward' },
         { icon: 'play' },
-        { icon: 'forward' },
+        { icon: 'step-forward' },
         // TODO: Set these options on the right side
         { icon: 'search-minus' },
         { icon: 'search-plus' },
@@ -54,44 +54,45 @@ export default {
       }
       this.waveSurfer.zoom(currentZoom - 10);
     },
-    optionSelected(option) {
-      const playbackOptions = ['backward', 'play', 'forward'];
-
-      if (playbackOptions.includes(option)) {
-        // TODO: Do not hardcode icon replacement.
-        this.waveSurferOptions[1].icon = 'pause';
-        if (option === 'play') {
-          this.waveSurfer.setPlaybackRate(1);
-        }
-
-        if (option === 'backward') {
-          const playbackRate = this.waveSurfer.getPlaybackRate();
-          this.waveSurfer.setPlaybackRate(playbackRate - 2);
-        }
-
-        if (option === 'forward') {
-          const playbackRate = this.waveSurfer.getPlaybackRate();
-          this.waveSurfer.setPlaybackRate(playbackRate + 1);
-        }
-
-        this.waveSurfer.play();
-      }
-
-      if (option === 'pause') {
-        // TODO: Do not hardcode icon replacement.
-        this.waveSurferOptions[1].icon = 'play';
-        this.waveSurfer.pause();
-      }
-
-      if (option === 'search-minus') {
-        this.zoomOut();
-      }
-
-      if (option === 'search-plus') {
-        this.zoomIn();
+    skipBackward() {
+      this.waveSurfer.skipBackward();
+    },
+    skipForward() {
+      this.waveSurfer.skipForward();
+    },
+    togglePlayPause() {
+      if (this.waveSurfer.isPlaying()) {
+        this.pause();
+      } else {
+        this.play();
       }
     },
+    play() {
+      // TODO: Do not hard code icon replacement.
+      this.waveSurferOptions[1].icon = 'pause';
+      this.waveSurfer.play();
+    },
+    pause() {
+      // TODO: Do not hard code icon replacement.
+      this.waveSurferOptions[1].icon = 'play';
+      this.waveSurfer.pause();
+    },
+    optionSelected(option) {
+      const playbackOptions = {
+        play: this.togglePlayPause,
+        pause: this.togglePlayPause,
+        'step-forward': this.skipForward,
+        'step-backward': this.skipBackward,
+        'search-plus': this.zoomIn,
+        'search-minus': this.zoomOut,
+      };
+      playbackOptions[option]();
+    },
     createWaveSurfer() {
+      console.log(this);
+      const style = window.getComputedStyle(document.body);
+      console.log(style.getPropertyValue('--red')); // #336699
+      console.log(style.getPropertyValue('--primary'));
       this.waveSurfer = WaveSurfer.create({
         height: 180,
         fillParent: true,
@@ -101,12 +102,12 @@ export default {
         mediaControls: false,
         // INSIGHT: control audio speed
         audioRate: 1.5,
-        wavecolor: '#fafafa',
+        waveColor: 'text-red',
         backend: 'MediaElement',
         container: document.getElementById('waveform'),
-        enableDragSection: false,
         plugins: [],
       });
+      console.log(this.waveSurfer.getWaveColor());
     },
     onFileUrlChange() {
       setTimeout(() => {

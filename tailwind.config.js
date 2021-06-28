@@ -6,6 +6,7 @@ module.exports = {
       primary: 'var(--primary)',
       secondary: 'var(--secondary)',
       'primary-hover': 'var(--primary-hover)',
+      red: 'var(--red)',
     },
     extend: {},
   },

@@ -1,16 +1,7 @@
 <template>
   <div :class="activeTheme">
-    <div
-      class="
-        font-sans
-        antialiased
-        min-h-screen
-        border
-        bg-primary
-        text-secondary
-      "
-    >
-      <div class="border m-4 absolute top-0 bottom-60 left-0 right-0">
+    <div class="font-sans antialiased min-h-screen bg-primary text-secondary">
+      <div class="m-4 absolute top-0 bottom-60 left-0 right-0">
         <div class="absolute border top-0 bottom-0 left-0 right-80">
           <VideoDisplay></VideoDisplay>
         </div>
@@ -23,7 +14,7 @@
           ></WaveSurferSettings>
         </div>
 
-        <div class="absolute top-0 bottom-0 right-0 w-16 text-3xl">
+        <div class="absolute border top-0 bottom-0 right-0 w-16 text-3xl">
           <div class="flex flex-col">
             <button
               v-for="setting in availableSettings"
@@ -42,7 +33,7 @@
         </div>
       </div>
 
-      <div class="border m-4 absolute bottom-0 right-0 left-0 h-60">
+      <div class="m-4 absolute bottom-0 right-0 left-0 h-60">
         <WaveSurfer></WaveSurfer>
       </div>
     </div>
