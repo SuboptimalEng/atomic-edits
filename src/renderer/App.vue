@@ -23,23 +23,21 @@
           ></WaveSurferSettings>
         </div>
 
-        <div class="absolute top-0 bottom-0 right-0 w-16 border text-3xl">
-          <div class="flex flex-col justify-between">
-            <div class="flex flex-col">
-              <button
-                v-for="setting in availableSettings"
-                :key="setting.section"
-                class="px-4 py-2 focus:outline-none"
-                :class="[
-                  activeSetting === setting.section
-                    ? 'bg-secondary text-primary'
-                    : 'hover:bg-primary-hover',
-                ]"
-                @click="setActiveSetting(setting.section)"
-              >
-                <fa :icon="setting.icon" />
-              </button>
-            </div>
+        <div class="absolute top-0 bottom-0 right-0 w-16 text-3xl">
+          <div class="flex flex-col">
+            <button
+              v-for="setting in availableSettings"
+              :key="setting.section"
+              class="px-4 py-2 focus:outline-none"
+              :class="[
+                activeSetting === setting.section
+                  ? 'bg-secondary text-primary'
+                  : 'hover:bg-primary-hover',
+              ]"
+              @click="setActiveSetting(setting.section)"
+            >
+              <fa :icon="setting.icon" />
+            </button>
           </div>
         </div>
       </div>
