@@ -8,7 +8,7 @@
             type="file"
             accept="video/mp4,audio/mp3"
             @change="onFileChange"
-            class="border"
+            class="border focus:outline-none"
           />
         </div>
       </div>
