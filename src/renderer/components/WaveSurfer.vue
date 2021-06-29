@@ -123,7 +123,6 @@ export default {
         // scrollParent: false,
         // hideScrollbar: true,
         barHeight: 1,
-        // TODO: decodes on zoom?
         forceDecode: true,
         mediaControls: false,
         // INSIGHT: control audio speed
@@ -132,7 +131,6 @@ export default {
         container: document.getElementById('waveform'),
         waveColor: this.getWaveSurferColors('--ws-wave-color'),
         progressColor: this.getWaveSurferColors('--ws-progress-color'),
-        // backgroundColor: this.getWaveSurferColors('--primary-hover'),
         plugins: [],
       });
 
