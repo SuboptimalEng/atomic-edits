@@ -35,7 +35,6 @@ export default {
         { icon: 'step-backward' },
         { icon: 'play' },
         { icon: 'step-forward' },
-        // TODO: Set these options on the right side
         { icon: 'search-minus' },
         { icon: 'search-plus' },
       ],
@@ -57,20 +56,26 @@ export default {
       if (currentZoom >= 100) {
         return;
       }
-      this.waveSurfer.zoom(currentZoom + 10);
+
+      if (currentZoom <= 10) {
+        this.waveSurfer.zoom(currentZoom + 20);
+      } else {
+        this.waveSurfer.zoom(currentZoom + 10);
+      }
     },
     zoomOut() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
       if (currentZoom <= 10) {
         return;
       }
+
       this.waveSurfer.zoom(currentZoom - 10);
     },
     skipBackward() {
-      this.waveSurfer.skipBackward();
+      this.waveSurfer.skipBackward(5);
     },
     skipForward() {
-      this.waveSurfer.skipForward();
+      this.waveSurfer.skipForward(5);
     },
     togglePlayPause() {
       if (this.waveSurfer.isPlaying()) {
@@ -90,18 +95,17 @@ export default {
       this.waveSurfer.pause();
     },
     optionSelected(option) {
-      const playbackOptions = {
-        play: this.togglePlayPause,
-        pause: this.togglePlayPause,
-        'step-forward': this.skipForward,
-        'step-backward': this.skipBackward,
-        'search-plus': this.zoomIn,
-        'search-minus': this.zoomOut,
+      const audioTrackOptions = {
+        play: 'play',
+        pause: 'pause',
+        'step-forward': 'skipForward',
+        'step-backward': 'skipBackward',
+        'search-plus': 'zoomIn',
+        'search-minus': 'zoomOut',
       };
-      playbackOptions[option]();
+      this[audioTrackOptions[option]]();
     },
     createWaveSurfer() {
-      console.log(this);
       this.waveSurfer = WaveSurfer.create({
         height: 180,
         fillParent: true,
@@ -116,7 +120,10 @@ export default {
         container: document.getElementById('waveform'),
         plugins: [],
       });
-      console.log(this.waveSurfer.getWaveColor());
+
+      this.waveSurfer.on('pause', () => {
+        this.pause();
+      });
     },
     onFileUrlChange() {
       setTimeout(() => {
