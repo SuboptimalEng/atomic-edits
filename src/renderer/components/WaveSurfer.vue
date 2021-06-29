@@ -19,10 +19,12 @@
 </template>
 
 <script>
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 import * as WaveSurfer from 'wavesurfer.js';
 // import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import { mapGetters } from 'vuex';
+import resolveConfig from 'tailwindcss/resolveConfig';
+import tailwindConfig from '../../../tailwind.config.js';
 
 export default {
   name: 'WaveSurfer',
@@ -40,6 +42,16 @@ export default {
     };
   },
   methods: {
+    getWaveSurferColors(cssVariable) {
+      const fullConfig = resolveConfig(tailwindConfig);
+      const computedStyle = getComputedStyle(
+        document.querySelector('.' + this.activeTheme)
+      );
+      _.each(Object.keys(fullConfig.theme.colors), (key) => {
+        console.log(computedStyle.getPropertyValue('--' + key));
+      });
+      return computedStyle.getPropertyValue(cssVariable);
+    },
     zoomIn() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
       if (currentZoom >= 100) {
@@ -90,9 +102,6 @@ export default {
     },
     createWaveSurfer() {
       console.log(this);
-      const style = window.getComputedStyle(document.body);
-      console.log(style.getPropertyValue('--red')); // #336699
-      console.log(style.getPropertyValue('--primary'));
       this.waveSurfer = WaveSurfer.create({
         height: 180,
         fillParent: true,
@@ -102,7 +111,7 @@ export default {
         mediaControls: false,
         // INSIGHT: control audio speed
         audioRate: 1.5,
-        waveColor: 'text-red',
+        waveColor: this.getWaveSurferColors('--red'),
         backend: 'MediaElement',
         container: document.getElementById('waveform'),
         plugins: [],
@@ -120,7 +129,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['fileUrl', 'filePath']),
+    ...mapGetters(['activeTheme', 'fileUrl', 'filePath']),
   },
   watch: {
     fileUrl: 'onFileUrlChange',
