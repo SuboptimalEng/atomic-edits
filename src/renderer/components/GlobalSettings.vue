@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div>Settings</div>
-    <div class="relative" v-click-outside="hideThemeSelection">
+    <div class="text-3xl font-bold">Settings</div>
+    <div class="italic">Coming soon...</div>
+    <!-- <div class="relative" v-click-outside="hideThemeSelection">
       <BaseButton @click="toggleThemeSelection">Themes</BaseButton>
       <div v-if="showThemeSelection" class="absolute">
         <div
@@ -15,18 +16,18 @@
           {{ theme }}
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
-import BaseButton from './BaseButton.vue';
+// import BaseButton from './BaseButton.vue';
 import { mapMutations } from 'vuex';
 
 export default {
   name: 'Settings',
   components: {
-    BaseButton,
+    // BaseButton,
   },
   data() {
     return {

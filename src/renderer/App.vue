@@ -7,12 +7,14 @@
         </div>
 
         <div class="absolute top-0 bottom-0 right-16 w-64 border">
-          <GlobalSettings
-            v-if="activeSetting === 'global-settings'"
-          ></GlobalSettings>
-          <WaveSurferSettings
-            v-if="activeSetting === 'wave-surfer-settings'"
-          ></WaveSurferSettings>
+          <div class="p-2">
+            <GlobalSettings
+              v-if="activeSetting === 'global-settings'"
+            ></GlobalSettings>
+            <WaveSurferSettings
+              v-if="activeSetting === 'wave-surfer-settings'"
+            ></WaveSurferSettings>
+          </div>
         </div>
 
         <div class="absolute border top-0 bottom-0 right-0 w-16 text-3xl">
