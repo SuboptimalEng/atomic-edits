@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex justify-around text-3xl h-full w-full">
+    <div class="flex justify-around text-3xl h-full w-full border-b">
       <div class="flex place-items-center">
         <button
           v-for="option in waveSurferOptions"
@@ -13,7 +13,7 @@
       </div>
     </div>
     <!-- <div class="grid grid-cols-1 h-full items-center"> -->
-    <div class="grid grid-cols-1 h-full">
+    <div class="grid grid-cols-1 h-full border-t">
       <div id="waveform"></div>
     </div>
   </div>
@@ -138,7 +138,8 @@ export default {
         audioRate: 1,
         backend: 'MediaElement',
         container: document.getElementById('waveform'),
-        waveColor: this.getWaveSurferColors('--secondary'),
+        waveColor: this.getWaveSurferColors('--ws-wave-color'),
+        progressColor: this.getWaveSurferColors('--ws-progress-color'),
         // backgroundColor: this.getWaveSurferColors('--primary-hover'),
         plugins: [],
       });
