@@ -74,27 +74,19 @@ export default {
     skipForward() {
       this.waveSurfer.skipForward(5);
     },
-    togglePlayPause() {
-      if (this.waveSurfer.isPlaying()) {
-        this.pause();
-      } else {
-        this.play();
-      }
-    },
-    play() {
+    togglePlayPauseButton(icon) {
       const playOrPause = ['play', 'pause'];
       const playOrPauseIdx = _.findIndex(this.waveSurferOptions, (option) => {
         return playOrPause.includes(option.icon);
       });
-      this.waveSurferOptions[playOrPauseIdx].icon = 'pause';
+      this.waveSurferOptions[playOrPauseIdx].icon = icon;
+    },
+    play() {
+      this.togglePlayPauseButton('pause');
       this.waveSurfer.play();
     },
     pause() {
-      const playOrPause = ['play', 'pause'];
-      const playOrPauseIdx = _.findIndex(this.waveSurferOptions, (option) => {
-        return playOrPause.includes(option.icon);
-      });
-      this.waveSurferOptions[playOrPauseIdx].icon = 'play';
+      this.togglePlayPauseButton('play');
       this.waveSurfer.pause();
     },
     lowerVolume() {
@@ -144,11 +136,8 @@ export default {
         plugins: [],
       });
 
-      // Change play button UI when track is done playing.
-      // Accidentally called this.pause() recursively.
-      // TODO: Fix this.
       this.waveSurfer.on('finish', () => {
-        this.pause();
+        this.togglePlayPauseButton('play');
       });
     },
     loadWaveSurfer() {
