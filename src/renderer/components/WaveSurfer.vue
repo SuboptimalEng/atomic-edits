@@ -6,7 +6,7 @@
           v-for="option in waveSurferOptions"
           :key="option.icon"
           class="px-4 py-2 focus:outline-none hover:bg-primary-hover"
-          @click="optionSelected(option.icon)"
+          @click="waveSurferOptionSelected(option.icon)"
         >
           <fa :icon="option.icon" />
         </button>
@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 import * as WaveSurfer from 'wavesurfer.js';
 // import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import { mapGetters } from 'vuex';
-import resolveConfig from 'tailwindcss/resolveConfig';
-import tailwindConfig from '../../../tailwind.config.js';
+// import resolveConfig from 'tailwindcss/resolveConfig';
+// import tailwindConfig from '../../../tailwind.config.js';
 
 export default {
   name: 'WaveSurfer',
@@ -35,6 +35,8 @@ export default {
         { icon: 'step-backward' },
         { icon: 'play' },
         { icon: 'step-forward' },
+        { icon: 'volume-down' },
+        { icon: 'volume-up' },
         { icon: 'search-minus' },
         { icon: 'search-plus' },
       ],
@@ -42,34 +44,36 @@ export default {
   },
   methods: {
     getWaveSurferColors(cssVariable) {
-      const fullConfig = resolveConfig(tailwindConfig);
+      // INSIGHT: Get tailwind variables like this.
+      // const fullConfig = resolveConfig(tailwindConfig);
+      // _.each(Object.keys(fullConfig.theme.colors), (key) => {
+      //   console.log(computedStyle.getPropertyValue('--' + key));
+      // });
       const computedStyle = getComputedStyle(
         document.querySelector('.' + this.activeTheme)
       );
-      _.each(Object.keys(fullConfig.theme.colors), (key) => {
-        console.log(computedStyle.getPropertyValue('--' + key));
-      });
       return computedStyle.getPropertyValue(cssVariable);
     },
     zoomIn() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      if (currentZoom >= 100) {
+      const newZoom = currentZoom + 10;
+      if (newZoom > 100) {
         return;
       }
 
-      if (currentZoom <= 10) {
-        this.waveSurfer.zoom(currentZoom + 20);
-      } else {
-        this.waveSurfer.zoom(currentZoom + 10);
-      }
+      this.waveSurfer.zoom(newZoom);
     },
     zoomOut() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      if (currentZoom <= 10) {
+      const newZoom = currentZoom - 10;
+      if (newZoom < 10) {
         return;
       }
 
-      this.waveSurfer.zoom(currentZoom - 10);
+      this.waveSurfer.zoom(newZoom);
+      if (newZoom === 10) {
+        this.waveSurfer.toggleScroll();
+      }
     },
     skipBackward() {
       this.waveSurfer.skipBackward(5);
@@ -94,30 +98,46 @@ export default {
       this.waveSurferOptions[1].icon = 'play';
       this.waveSurfer.pause();
     },
-    optionSelected(option) {
-      const audioTrackOptions = {
+    lowerVolume() {
+      const currentVolume = this.waveSurfer.getVolume();
+      const newVolume = currentVolume - 0.2;
+      if (newVolume >= 0) {
+        this.waveSurfer.setVolume(newVolume);
+      }
+    },
+    increaseVolume() {
+      const currentVolume = this.waveSurfer.getVolume();
+      const newVolume = currentVolume + 0.2;
+      if (newVolume <= 1) {
+        this.waveSurfer.setVolume(newVolume);
+      }
+    },
+    waveSurferOptionSelected(option) {
+      const waveSurferMethods = {
         play: 'play',
         pause: 'pause',
         'step-forward': 'skipForward',
         'step-backward': 'skipBackward',
         'search-plus': 'zoomIn',
         'search-minus': 'zoomOut',
+        'volume-down': 'lowerVolume',
+        'volume-up': 'increaseVolume',
       };
-      this[audioTrackOptions[option]]();
+      this[waveSurferMethods[option]]();
     },
     createWaveSurfer() {
       this.waveSurfer = WaveSurfer.create({
         height: 180,
         fillParent: true,
-        barHeight: 1.25,
+        barHeight: 1,
         // TODO: decodes on zoom?
         forceDecode: true,
         mediaControls: false,
         // INSIGHT: control audio speed
-        audioRate: 1.5,
-        waveColor: this.getWaveSurferColors('--red'),
+        audioRate: 1,
         backend: 'MediaElement',
         container: document.getElementById('waveform'),
+        waveColor: this.getWaveSurferColors('--secondary'),
         plugins: [],
       });
 
