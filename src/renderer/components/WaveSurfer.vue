@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-col border h-full">
-    <div class="flex justify-between text-3xl w-full">
+    <div class="flex justify-around text-3xl w-full">
       <div class="flex place-items-center">
         <button
           v-for="option in waveSurferOptions"

@@ -5,6 +5,7 @@
         <div class="absolute border top-0 bottom-0 left-0 right-80">
           <VideoDisplay></VideoDisplay>
         </div>
+
         <div class="absolute top-0 bottom-0 right-16 w-64 border">
           <GlobalSettings
             v-if="activeSetting === 'global-settings'"
