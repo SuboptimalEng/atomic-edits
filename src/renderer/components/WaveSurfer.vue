@@ -1,18 +1,19 @@
 <template>
   <div class="flex flex-col h-full">
-    <div class="flex justify-around text-3xl w-full border">
+    <div class="flex justify-around text-3xl h-full w-full">
       <div class="flex place-items-center">
         <button
           v-for="option in waveSurferOptions"
           :key="option.icon"
-          class="px-4 py-2 focus:outline-none hover:bg-primary-hover"
+          class="px-4 h-full focus:outline-none hover:bg-primary-hover"
           @click="waveSurferOptionSelected(option.icon)"
         >
           <fa :icon="option.icon" />
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-1 h-full items-center border">
+    <!-- <div class="grid grid-cols-1 h-full items-center"> -->
+    <div class="grid grid-cols-1 h-full">
       <div id="waveform"></div>
     </div>
   </div>
@@ -61,24 +62,11 @@ export default {
     },
     zoomIn() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      const newZoom = currentZoom + 10;
-      if (newZoom > 100) {
-        return;
-      }
-
-      this.waveSurfer.zoom(newZoom);
+      this.waveSurfer.zoom(currentZoom + 20);
     },
     zoomOut() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      const newZoom = currentZoom - 10;
-      if (newZoom < 10) {
-        return;
-      }
-
-      this.waveSurfer.zoom(newZoom);
-      if (newZoom === 10) {
-        this.waveSurfer.toggleScroll();
-      }
+      this.waveSurfer.zoom(currentZoom - 20);
     },
     skipBackward() {
       this.waveSurfer.skipBackward(5);
@@ -140,6 +128,8 @@ export default {
       this.waveSurfer = WaveSurfer.create({
         height: 180,
         fillParent: true,
+        // scrollParent: false,
+        // hideScrollbar: true,
         barHeight: 1,
         // TODO: decodes on zoom?
         forceDecode: true,
@@ -156,9 +146,9 @@ export default {
       // Change play button UI when track is done playing.
       // Accidentally called this.pause() recursively.
       // TODO: Fix this.
-      // this.waveSurfer.on('pause', () => {
-      //   this.pause();
-      // });
+      this.waveSurfer.on('finish', () => {
+        this.pause();
+      });
     },
     loadWaveSurfer() {
       setTimeout(() => {

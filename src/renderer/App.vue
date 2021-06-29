@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="m-4 absolute bottom-0 right-0 left-0 h-60">
+      <div class="m-4 absolute bottom-0 right-0 left-0 h-60 border">
         <WaveSurfer></WaveSurfer>
       </div>
     </div>
