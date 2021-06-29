@@ -6,22 +6,11 @@
 
 @layer base {
   .theme-light {
-    /* black */
     --black: #000000;
-
-    /* gray 100 */
     --primary: #f3f4f6;
-
-    /* gray 900 */
     --secondary: #111827;
-
-    /* gray 400 */
     --primary-hover: #9ca3af;
-
-    /* gray 500 */
     --ws-wave-color: #6b7280;
-
-    /* red 500 */
     --ws-silent-color: #ef4444;
   }
 
