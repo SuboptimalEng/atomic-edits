@@ -1,49 +1,56 @@
 <template>
   <div :class="activeTheme">
     <div class="font-sans antialiased min-h-screen bg-primary text-secondary">
-      <div class="m-4 absolute top-0 bottom-60 left-0 right-0">
-        <div class="absolute border top-0 bottom-0 left-0 right-80">
-          <VideoDisplay></VideoDisplay>
-        </div>
+      <div v-if="fileExists()">
+        <div class="m-4 absolute top-0 bottom-60 left-0 right-0">
+          <div class="absolute border top-0 bottom-0 left-0 right-80">
+            <VideoDisplay></VideoDisplay>
+          </div>
 
-        <div class="absolute top-0 bottom-0 right-16 w-64 border">
-          <div class="p-2">
-            <GlobalSettings
-              v-if="activeSetting === 'global-settings'"
-            ></GlobalSettings>
-            <WaveSurferSettings
-              v-if="activeSetting === 'wave-surfer-settings'"
-            ></WaveSurferSettings>
+          <div class="absolute top-0 bottom-0 right-16 w-64 border">
+            <div class="p-2">
+              <GlobalSettings
+                v-if="activeSetting === 'global-settings'"
+              ></GlobalSettings>
+              <WaveSurferSettings
+                v-if="activeSetting === 'wave-surfer-settings'"
+              ></WaveSurferSettings>
+            </div>
+          </div>
+
+          <div class="absolute border top-0 bottom-0 right-0 w-16 text-3xl">
+            <div class="flex flex-col">
+              <button
+                v-for="setting in availableSettings"
+                :key="setting.section"
+                class="px-4 py-2 focus:outline-none"
+                :class="[
+                  activeSetting === setting.section
+                    ? 'bg-secondary text-primary'
+                    : 'hover:bg-primary-hover',
+                ]"
+                @click="setActiveSetting(setting.section)"
+              >
+                <fa :icon="setting.icon" />
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="absolute border top-0 bottom-0 right-0 w-16 text-3xl">
-          <div class="flex flex-col">
-            <button
-              v-for="setting in availableSettings"
-              :key="setting.section"
-              class="px-4 py-2 focus:outline-none"
-              :class="[
-                activeSetting === setting.section
-                  ? 'bg-secondary text-primary'
-                  : 'hover:bg-primary-hover',
-              ]"
-              @click="setActiveSetting(setting.section)"
-            >
-              <fa :icon="setting.icon" />
-            </button>
-          </div>
+        <div class="m-4 absolute bottom-0 right-0 left-0 h-60 border">
+          <WaveSurfer></WaveSurfer>
         </div>
       </div>
-
-      <div class="m-4 absolute bottom-0 right-0 left-0 h-60 border">
-        <WaveSurfer></WaveSurfer>
+      <div v-else>
+        <LoadFile></LoadFile>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import _ from 'lodash';
+import LoadFile from './components/LoadFile.vue';
 import WaveSurfer from './components/WaveSurfer.vue';
 import VideoDisplay from './components/VideoDisplay.vue';
 import GlobalSettings from './components/GlobalSettings.vue';
@@ -53,6 +60,7 @@ import { mapGetters, mapMutations } from 'vuex';
 export default {
   name: 'App',
   components: {
+    LoadFile,
     WaveSurfer,
     VideoDisplay,
     GlobalSettings,
@@ -77,9 +85,13 @@ export default {
   },
   methods: {
     ...mapMutations(['setActiveSetting']),
+
+    fileExists() {
+      return !_.isEmpty(this.fileUrl);
+    },
   },
   computed: {
-    ...mapGetters(['activeTheme', 'activeSetting']),
+    ...mapGetters(['activeTheme', 'activeSetting', 'fileUrl']),
   },
 };
 </script>
