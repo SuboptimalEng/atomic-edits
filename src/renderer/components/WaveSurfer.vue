@@ -139,6 +139,7 @@ export default {
     },
     loadWaveSurfer() {
       setTimeout(() => {
+        // INSIGHT: Bind wave surfer to video display element.
         const videoDisplayElement = document.getElementById(
           'videoDisplayElement'
         );
