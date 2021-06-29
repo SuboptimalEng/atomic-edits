@@ -12,7 +12,6 @@
         </button>
       </div>
     </div>
-    <!-- <div class="grid grid-cols-1 h-full items-center"> -->
     <div class="grid grid-cols-1 h-full border-t">
       <div id="waveform"></div>
     </div>
