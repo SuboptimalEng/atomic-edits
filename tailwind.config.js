@@ -3,10 +3,10 @@ module.exports = {
   darkMode: false, // or 'media' or 'class'
   theme: {
     colors: {
+      black: 'var(--black)',
       primary: 'var(--primary)',
       secondary: 'var(--secondary)',
       'primary-hover': 'var(--primary-hover)',
-      red: 'var(--red)',
     },
     extend: {},
   },

@@ -42,6 +42,11 @@ export default {
       ],
     };
   },
+  mounted() {
+    if (!_.isEmpty(this.fileUrl)) {
+      this.loadWaveSurfer();
+    }
+  },
   methods: {
     getWaveSurferColors(cssVariable) {
       // INSIGHT: Get tailwind variables like this.
@@ -144,6 +149,7 @@ export default {
         backend: 'MediaElement',
         container: document.getElementById('waveform'),
         waveColor: this.getWaveSurferColors('--secondary'),
+        // backgroundColor: this.getWaveSurferColors('--primary-hover'),
         plugins: [],
       });
 
@@ -154,7 +160,7 @@ export default {
       //   this.pause();
       // });
     },
-    onFileUrlChange() {
+    loadWaveSurfer() {
       setTimeout(() => {
         const videoDisplayElement = document.getElementById(
           'videoDisplayElement'
@@ -168,7 +174,7 @@ export default {
     ...mapGetters(['activeTheme', 'fileUrl', 'filePath']),
   },
   watch: {
-    fileUrl: 'onFileUrlChange',
+    fileUrl: 'loadWaveSurfer',
   },
 };
 </script>

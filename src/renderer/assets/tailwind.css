@@ -6,16 +6,19 @@
 
 @layer base {
   .theme-light {
+    --black: #000000;
     --primary: #f3f4f6;
     --secondary: #111827;
     --primary-hover: #d1d5db;
   }
   .theme-dark {
+    --black: #000000;
     --primary: #111827;
     --secondary: #f3f4f6;
     --primary-hover: #4b5563;
   }
   .theme-dracula {
+    --black: #000000;
     --primary: #282a36;
     --secondary: #f8f8f2;
     --primary-hover: #44475a;

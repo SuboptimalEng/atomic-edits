@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full">
+  <div class="h-full bg-black">
     <div class="flex flex-col h-full place-items-center">
       <div v-if="fileUrl.length === 0">
         <div>Upload a Video/MP3 File</div>
