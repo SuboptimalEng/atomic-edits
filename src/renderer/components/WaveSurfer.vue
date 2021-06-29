@@ -19,7 +19,7 @@
 </template>
 
 <script>
-// import * as _ from 'lodash';
+import * as _ from 'lodash';
 import * as WaveSurfer from 'wavesurfer.js';
 // import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import { mapGetters } from 'vuex';
@@ -32,11 +32,11 @@ export default {
     return {
       waveSurfer: null,
       waveSurferOptions: [
+        { icon: 'volume-down' },
+        { icon: 'volume-up' },
         { icon: 'step-backward' },
         { icon: 'play' },
         { icon: 'step-forward' },
-        { icon: 'volume-down' },
-        { icon: 'volume-up' },
         { icon: 'search-minus' },
         { icon: 'search-plus' },
       ],
@@ -89,13 +89,19 @@ export default {
       }
     },
     play() {
-      // TODO: Do not hard code icon replacement.
-      this.waveSurferOptions[1].icon = 'pause';
+      const playOrPause = ['play', 'pause'];
+      const playOrPauseIdx = _.findIndex(this.waveSurferOptions, (option) => {
+        return playOrPause.includes(option.icon);
+      });
+      this.waveSurferOptions[playOrPauseIdx].icon = 'pause';
       this.waveSurfer.play();
     },
     pause() {
-      // TODO: Do not hard code icon replacement.
-      this.waveSurferOptions[1].icon = 'play';
+      const playOrPause = ['play', 'pause'];
+      const playOrPauseIdx = _.findIndex(this.waveSurferOptions, (option) => {
+        return playOrPause.includes(option.icon);
+      });
+      this.waveSurferOptions[playOrPauseIdx].icon = 'play';
       this.waveSurfer.pause();
     },
     lowerVolume() {
@@ -141,9 +147,12 @@ export default {
         plugins: [],
       });
 
-      this.waveSurfer.on('pause', () => {
-        this.pause();
-      });
+      // Change play button UI when track is done playing.
+      // Accidentally called this.pause() recursively.
+      // TODO: Fix this.
+      // this.waveSurfer.on('pause', () => {
+      //   this.pause();
+      // });
     },
     onFileUrlChange() {
       setTimeout(() => {
