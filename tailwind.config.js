@@ -9,7 +9,7 @@ module.exports = {
       'primary-hover': 'var(--primary-hover)',
       'ws-wave-color': 'var(--ws-wave-color)',
       'ws-progress-color': 'var(--ws-progress-color)',
-      'ws-silent-color': 'var(--ws-silent-color)',
+      'ws-silent-region-color': 'var(--ws-silent-region-color)',
     },
     extend: {},
   },

@@ -34,7 +34,8 @@
     --ws-progress-color: #f3f4f6;
 
     /* red 500 */
-    --ws-silent-color: #ef4444;
+    /* --ws-silent-region-color: #ef4444; */
+    --ws-silent-region-color: 239, 68, 68;
   }
 
   .theme-dracula {

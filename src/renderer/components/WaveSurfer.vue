@@ -22,7 +22,7 @@
 <script>
 import _ from 'lodash';
 import WaveSurfer from 'wavesurfer.js';
-// import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import WaveSurferTimeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { mapGetters } from 'vuex';
 // INSIGHT: Get tailwind variables like this.
@@ -46,6 +46,11 @@ export default {
     };
   },
   mounted() {
+    // setup wavesurfer silent region color
+    this.silentRegionColor = `rgba(${this.getWaveSurferColors(
+      '--ws-silent-region-color'
+    )}, .25)`;
+
     if (!_.isEmpty(this.fileUrl)) {
       this.setUpWaveSurfer();
     }
@@ -61,12 +66,22 @@ export default {
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
+      this.waveSurfer.addRegion({
+        drag: true,
+        resize: true,
+        minLength: 0.1,
+        start: 10,
+        end: 20,
+        color: this.silentRegionColor,
+      });
     },
     createWaveSurfer() {
       return WaveSurfer.create({
         height: 160,
         barHeight: 1,
         audioRate: 1,
+        // INSIGHT: Normalize wave based on highest peak
+        // normalize: true,
         fillParent: true,
         scrollParent: false,
         mediaControls: false,
@@ -80,6 +95,9 @@ export default {
             container: '#waveform-timeline',
             primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
             secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+          }),
+          WaveSurferRegions.create({
+            regions: [],
           }),
         ],
       });
