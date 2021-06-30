@@ -5,7 +5,7 @@
         <button
           v-for="option in waveSurferOptions"
           :key="option.icon"
-          class="px-4 h-full focus:outline-none hover:bg-primary-hover"
+          class="px-4 py-2 h-full focus:outline-none hover:bg-primary-hover"
           @click="waveSurferOptionSelected(option.icon)"
         >
           <fa :icon="option.icon" />
@@ -13,15 +13,17 @@
       </div>
     </div>
     <div class="grid grid-cols-1 h-full border-t">
+      <div id="waveform-timeline"></div>
       <div id="waveform"></div>
     </div>
   </div>
 </template>
 
 <script>
-import * as _ from 'lodash';
-import * as WaveSurfer from 'wavesurfer.js';
+import _ from 'lodash';
+import WaveSurfer from 'wavesurfer.js';
 // import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
+import WaveSurferTimeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { mapGetters } from 'vuex';
 // import resolveConfig from 'tailwindcss/resolveConfig';
 // import tailwindConfig from '../../../tailwind.config.js';
@@ -126,7 +128,7 @@ export default {
     },
     createWaveSurfer() {
       this.waveSurfer = WaveSurfer.create({
-        height: 180,
+        height: 160,
         fillParent: true,
         // scrollParent: false,
         // hideScrollbar: true,
@@ -139,7 +141,13 @@ export default {
         container: document.getElementById('waveform'),
         waveColor: this.getWaveSurferColors('--ws-wave-color'),
         progressColor: this.getWaveSurferColors('--ws-progress-color'),
-        plugins: [],
+        plugins: [
+          WaveSurferTimeline.create({
+            container: '#waveform-timeline',
+            primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+            secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+          }),
+        ],
       });
 
       this.waveSurfer.on('finish', () => {
