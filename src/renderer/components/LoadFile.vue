@@ -36,15 +36,21 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
   name: 'LoadFile',
 
-  data() {
-    return {};
-  },
   methods: {
-    onFileChange() {
-      console.log('hi');
+    ...mapMutations(['setFileUrl', 'setFilePath']),
+
+    onFileChange(e) {
+      const files = e.target.files || e.dataTransfer.files;
+      if (files.length === 0) {
+        return;
+      }
+      this.setFilePath(files[0].path);
+      this.setFileUrl(URL.createObjectURL(files[0]));
     },
   },
 };
