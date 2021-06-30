@@ -4,7 +4,7 @@
       <fa v-if="isAudioFile()" icon="headphones" class="text-9xl" />
       <video
         :src="fileUrl"
-        id="videoDisplayElement"
+        id="video-display-element"
         type="video/mp4,audio/mp3"
         :class="[
           isAudioFile() ? 'hidden h-0 w-0' : 'h-full focus:outline-none',

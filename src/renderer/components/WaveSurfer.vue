@@ -25,6 +25,7 @@ import WaveSurfer from 'wavesurfer.js';
 // import * as WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import WaveSurferTimeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
 import { mapGetters } from 'vuex';
+// INSIGHT: Get tailwind variables like this.
 // import resolveConfig from 'tailwindcss/resolveConfig';
 // import tailwindConfig from '../../../tailwind.config.js';
 
@@ -46,10 +47,43 @@ export default {
   },
   mounted() {
     if (!_.isEmpty(this.fileUrl)) {
-      this.loadWaveSurfer();
+      this.setUpWaveSurfer();
     }
   },
   methods: {
+    setUpWaveSurfer() {
+      // INSIGHT: Bind wave surfer to video display element.
+      const videoDisplayElement = document.getElementById(
+        'video-display-element'
+      );
+      this.waveSurfer = this.createWaveSurfer();
+      this.waveSurfer.load(videoDisplayElement);
+      this.waveSurfer.on('finish', () => {
+        this.togglePlayPauseButton('play');
+      });
+    },
+    createWaveSurfer() {
+      return WaveSurfer.create({
+        height: 160,
+        barHeight: 1,
+        audioRate: 1,
+        fillParent: true,
+        scrollParent: false,
+        mediaControls: false,
+        forceDecode: true,
+        backend: 'MediaElement',
+        container: document.getElementById('waveform'),
+        waveColor: this.getWaveSurferColors('--ws-wave-color'),
+        progressColor: this.getWaveSurferColors('--ws-progress-color'),
+        plugins: [
+          WaveSurferTimeline.create({
+            container: '#waveform-timeline',
+            primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+            secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+          }),
+        ],
+      });
+    },
     getWaveSurferColors(cssVariable) {
       // INSIGHT: Get tailwind variables like this.
       // const fullConfig = resolveConfig(tailwindConfig);
@@ -126,50 +160,12 @@ export default {
       };
       this[waveSurferMethods[option]]();
     },
-    createWaveSurfer() {
-      this.waveSurfer = WaveSurfer.create({
-        height: 160,
-        fillParent: true,
-        // scrollParent: false,
-        // hideScrollbar: true,
-        barHeight: 1,
-        forceDecode: true,
-        mediaControls: false,
-        // INSIGHT: control audio speed
-        audioRate: 1,
-        backend: 'MediaElement',
-        container: document.getElementById('waveform'),
-        waveColor: this.getWaveSurferColors('--ws-wave-color'),
-        progressColor: this.getWaveSurferColors('--ws-progress-color'),
-        plugins: [
-          WaveSurferTimeline.create({
-            container: '#waveform-timeline',
-            primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
-            secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
-          }),
-        ],
-      });
-
-      this.waveSurfer.on('finish', () => {
-        this.togglePlayPauseButton('play');
-      });
-    },
-    loadWaveSurfer() {
-      setTimeout(() => {
-        // INSIGHT: Bind wave surfer to video display element.
-        const videoDisplayElement = document.getElementById(
-          'videoDisplayElement'
-        );
-        this.createWaveSurfer();
-        this.waveSurfer.load(videoDisplayElement);
-      }, 100);
-    },
   },
   computed: {
     ...mapGetters(['activeTheme', 'fileUrl']),
   },
   watch: {
-    fileUrl: 'loadWaveSurfer',
+    fileUrl: 'setUpWaveSurfer',
   },
 };
 </script>
