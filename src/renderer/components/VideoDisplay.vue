@@ -1,7 +1,7 @@
 <template>
   <div class="h-full bg-black">
-    <div class="flex flex-col h-full place-items-center">
-      <fa v-if="isAudioFile()" icon="headphones" />
+    <div class="flex flex-col h-full place-items-center justify-center">
+      <fa v-if="isAudioFile()" icon="headphones" class="text-9xl" />
       <video
         :src="fileUrl"
         id="videoDisplayElement"
@@ -21,7 +21,7 @@ export default {
   name: 'VideoDisplay',
   methods: {
     isAudioFile() {
-      return this.fileType.includes('mp3');
+      return this.fileType.includes('audio');
     },
     onFileTypeChange() {
       // TODO: maybe change image when user changes file

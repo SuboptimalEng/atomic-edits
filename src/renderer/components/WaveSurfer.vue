@@ -14,7 +14,7 @@
     </div>
     <div class="grid grid-cols-1 h-full border-t">
       <div id="waveform-timeline"></div>
-      <div id="waveform"></div>
+      <div id="waveform" class="w-full"></div>
     </div>
   </div>
 </template>
