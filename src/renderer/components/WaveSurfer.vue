@@ -66,6 +66,11 @@ export default {
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
+      // this.waveSurfer.on('waveform-ready', () => {
+      //   const NUM_OF_PEAKS = 1024;
+      //   this.duration = this.waveSurfer.getDuration();
+      //   this.peaks = this.waveSurfer.backend.getPeaks(NUM_OF_PEAKS);
+      // });
       this.waveSurfer.addRegion({
         drag: true,
         resize: true,
@@ -86,8 +91,8 @@ export default {
         scrollParent: false,
         mediaControls: false,
         forceDecode: true,
+        container: '#waveform',
         backend: 'MediaElement',
-        container: document.getElementById('waveform'),
         waveColor: this.getWaveSurferColors('--ws-wave-color'),
         progressColor: this.getWaveSurferColors('--ws-progress-color'),
         plugins: [
