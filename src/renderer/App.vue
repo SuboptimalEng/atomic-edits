@@ -24,9 +24,10 @@
           <WaveSurfer></WaveSurfer>
         </div>
       </div>
-
       <div v-else>
-        <LoadFile></LoadFile>
+        <div class="m-4 absolute top-0 bottom-0 left-0 right-0 border">
+          <LoadFile></LoadFile>
+        </div>
       </div>
     </div>
   </div>
