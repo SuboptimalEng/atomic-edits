@@ -66,8 +66,15 @@ export default {
     },
     zoomOut() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      const newZoom = currentZoom === 0 ? currentZoom : currentZoom - 10;
-      this.waveSurfer.zoom(Number(newZoom));
+      const newZoom = currentZoom === 20 ? currentZoom : currentZoom - 10;
+      if (currentZoom === 20) {
+        // Don't zoom to prevent scrollbar from appearing.
+      } else if (currentZoom - 10 === 20) {
+        this.waveSurfer.zoom(Number(newZoom));
+        this.waveSurfer.toggleScroll();
+      } else {
+        this.waveSurfer.zoom(Number(newZoom));
+      }
     },
     skipBackward() {
       this.waveSurfer.skipBackward(5);
