@@ -61,11 +61,13 @@ export default {
     },
     zoomIn() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      this.waveSurfer.zoom(currentZoom + 20);
+      const newZoom = currentZoom === 80 ? currentZoom : currentZoom + 10;
+      this.waveSurfer.zoom(Number(newZoom));
     },
     zoomOut() {
       const currentZoom = this.waveSurfer.params.minPxPerSec;
-      this.waveSurfer.zoom(currentZoom - 20);
+      const newZoom = currentZoom === 0 ? currentZoom : currentZoom - 10;
+      this.waveSurfer.zoom(Number(newZoom));
     },
     skipBackward() {
       this.waveSurfer.skipBackward(5);
