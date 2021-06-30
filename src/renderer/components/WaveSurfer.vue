@@ -166,7 +166,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['activeTheme', 'fileUrl', 'filePath']),
+    ...mapGetters(['activeTheme', 'fileUrl']),
   },
   watch: {
     fileUrl: 'loadWaveSurfer',
