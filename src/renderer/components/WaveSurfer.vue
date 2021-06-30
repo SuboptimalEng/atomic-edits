@@ -67,9 +67,10 @@ export default {
         this.togglePlayPauseButton('play');
       });
       // this.waveSurfer.on('waveform-ready', () => {
-      //   const NUM_OF_PEAKS = 1024;
       //   this.duration = this.waveSurfer.getDuration();
+      //   const NUM_OF_PEAKS = Math.floor(this.duration * 2);
       //   this.peaks = this.waveSurfer.backend.getPeaks(NUM_OF_PEAKS);
+      //   console.log(this.peaks);
       // });
       this.waveSurfer.addRegion({
         drag: true,
