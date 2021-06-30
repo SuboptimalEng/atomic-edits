@@ -3,10 +3,10 @@
     <div class="font-sans antialiased min-h-screen bg-primary text-secondary">
       <div v-if="fileExists()">
         <div class="m-4 absolute top-0 bottom-60 left-0 right-0">
-          <div class="absolute border top-0 bottom-0 left-0 right-80">
+          <div class="absolute border top-0 bottom-0 left-0 right-96">
             <VideoDisplay></VideoDisplay>
           </div>
-          <div class="absolute top-0 bottom-0 right-16 w-64 border">
+          <div class="absolute top-0 bottom-0 right-16 w-80 border">
             <div class="p-2">
               <GlobalSettings
                 v-if="activeSetting === 'global-settings'"
