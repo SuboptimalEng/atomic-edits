@@ -7,7 +7,7 @@
             <VideoDisplay></VideoDisplay>
           </div>
           <div class="absolute top-0 bottom-0 right-16 w-80 border">
-            <div class="p-2 h-full">
+            <div class="p-4 h-full">
               <GlobalSettings
                 v-if="activeSetting === 'global-settings'"
               ></GlobalSettings>

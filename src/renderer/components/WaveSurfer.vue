@@ -52,11 +52,15 @@ export default {
     )}, .4)`;
 
     if (!_.isEmpty(this.fileUrl)) {
-      this.loadWaveSurfer();
+      this.reloadWaveSurfer();
     }
   },
   methods: {
-    loadWaveSurfer() {
+    reloadWaveSurfer() {
+      if (!_.isEmpty(this.waveSurfer)) {
+        this.waveSurfer.destroy();
+      }
+
       // INSIGHT: Bind wave surfer to video display element.
       const videoDisplayElement = document.getElementById(
         'video-display-element'
@@ -230,14 +234,15 @@ export default {
         height: 200,
         barHeight: 1,
         audioRate: 1,
-        // INSIGHT: Normalize wave based on highest peak
-        // normalize: true,
         fillParent: true,
         scrollParent: false,
         mediaControls: false,
         forceDecode: true,
         container: '#waveform',
         backend: 'MediaElement',
+        // INSIGHT: Normalize wave based on highest peak
+        normalize: this.normalizeAudio,
+        removeMediaElementOnDestroy: false,
         waveColor: this.getWaveSurferColors('--ws-wave-color'),
         progressColor: this.getWaveSurferColors('--ws-progress-color'),
         plugins: [
@@ -255,10 +260,11 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['activeTheme', 'fileUrl']),
+    ...mapGetters(['activeTheme', 'fileUrl', 'normalizeAudio']),
   },
   watch: {
-    fileUrl: 'loadWaveSurfer',
+    fileUrl: 'reloadWaveSurfer',
+    normalizeAudio: 'reloadWaveSurfer',
   },
 };
 </script>

@@ -10,6 +10,12 @@ export default createStore({
     filePath: '',
     fileName: '',
     fileType: '',
+
+    // Wave Surfer Settings
+    normalizeAudio: true,
+    skipSilentRegions: true,
+
+    // Global Settings
     activeTheme: 'theme-dark',
     activeSetting: 'wave-surfer-settings',
   },
@@ -25,6 +31,12 @@ export default createStore({
     },
     setFileType(state, fileType) {
       state.fileType = fileType;
+    },
+    toggleNormalizeAudio(state) {
+      state.normalizeAudio = !state.normalizeAudio;
+    },
+    toggleSkipSilentRegions(state) {
+      state.skipSilentRegions = !state.skipSilentRegions;
     },
     setActiveTheme(state, activeTheme) {
       state.activeTheme = activeTheme;
@@ -45,6 +57,12 @@ export default createStore({
     },
     fileType(state) {
       return state.fileType;
+    },
+    normalizeAudio(state) {
+      return state.normalizeAudio;
+    },
+    skipSilentRegions(state) {
+      return state.skipSilentRegions;
     },
     activeTheme(state) {
       return state.activeTheme;
