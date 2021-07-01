@@ -15,8 +15,8 @@
           @click="this[booleanSetting.methodName]()"
           class="focus:outline-none hover:text-primary-hover"
         >
-          <fa v-if="this[booleanSetting.name]" icon="toggle-on" />
-          <fa v-else icon="toggle-off" />
+          <fa v-if="this[booleanSetting.name]" icon="check-square" />
+          <fa v-else icon="square" />
         </button>
       </div>
     </div>
