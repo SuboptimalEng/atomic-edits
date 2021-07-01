@@ -2,7 +2,7 @@
   <div :class="activeTheme">
     <div class="font-sans antialiased min-h-screen bg-primary text-secondary">
       <div v-if="fileExists()">
-        <div class="m-4 absolute top-0 bottom-60 left-0 right-0">
+        <div class="m-4 absolute top-0 bottom-72 left-0 right-0">
           <div class="absolute border top-0 bottom-0 left-0 right-96">
             <VideoDisplay></VideoDisplay>
           </div>
@@ -20,7 +20,7 @@
             <Sidebar></Sidebar>
           </div>
         </div>
-        <div class="m-4 absolute bottom-0 right-0 left-0 h-60 border">
+        <div class="m-4 absolute bottom-0 right-0 left-0 h-72 border">
           <WaveSurfer></WaveSurfer>
         </div>
       </div>

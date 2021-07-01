@@ -49,63 +49,104 @@ export default {
     // setup wavesurfer silent region color
     this.silentRegionColor = `rgba(${this.getWaveSurferColors(
       '--ws-silent-region-color'
-    )}, .25)`;
+    )}, .4)`;
 
     if (!_.isEmpty(this.fileUrl)) {
-      this.setUpWaveSurfer();
+      this.loadWaveSurfer();
     }
   },
   methods: {
-    setUpWaveSurfer() {
+    loadWaveSurfer() {
       // INSIGHT: Bind wave surfer to video display element.
       const videoDisplayElement = document.getElementById(
         'video-display-element'
       );
       this.waveSurfer = this.createWaveSurfer();
       this.waveSurfer.load(videoDisplayElement);
+      this.waveSurfer.on('waveform-ready', () => {
+        const duration = this.waveSurfer.getDuration();
+        const peaks = this.waveSurfer.backend.getPeaks(
+          Math.floor(duration * 100)
+        );
+        this.loadRegions(this.extractSilentRegions(peaks, duration));
+      });
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
-      // this.waveSurfer.on('waveform-ready', () => {
-      //   this.duration = this.waveSurfer.getDuration();
-      //   const NUM_OF_PEAKS = Math.floor(this.duration * 2);
-      //   this.peaks = this.waveSurfer.backend.getPeaks(NUM_OF_PEAKS);
-      //   console.log(this.peaks);
-      // });
-      this.waveSurfer.addRegion({
-        drag: true,
-        resize: true,
-        minLength: 0.1,
-        start: 10,
-        end: 20,
-        color: this.silentRegionColor,
-      });
     },
-    createWaveSurfer() {
-      return WaveSurfer.create({
-        height: 160,
-        barHeight: 1,
-        audioRate: 1,
-        // INSIGHT: Normalize wave based on highest peak
-        // normalize: true,
-        fillParent: true,
-        scrollParent: false,
-        mediaControls: false,
-        forceDecode: true,
-        container: '#waveform',
-        backend: 'MediaElement',
-        waveColor: this.getWaveSurferColors('--ws-wave-color'),
-        progressColor: this.getWaveSurferColors('--ws-progress-color'),
-        plugins: [
-          WaveSurferTimeline.create({
-            container: '#waveform-timeline',
-            primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
-            secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
-          }),
-          WaveSurferRegions.create({
-            regions: [],
-          }),
-        ],
+    loadRegions(regions) {
+      _.each(regions, (region) => {
+        this.waveSurfer.addRegion(region);
+      });
+      this.regionIds = Object.keys(this.waveSurfer.regions.list);
+    },
+    extractSilentRegions(peaks, duration) {
+      const silenceLength = 0.5;
+      const silenceSensitivity = 0.1;
+      const coef = duration / peaks.length;
+      const minClusterLength = silenceLength / coef;
+
+      // Gather silence indeces
+      const silences = [];
+      _.each(peaks, (val, index) => {
+        if (Math.abs(val) <= silenceSensitivity) {
+          silences.push(index);
+        }
+      });
+
+      const clusters = [];
+      _.each(silences, (val, index) => {
+        if (clusters.length && val == silences[index - 1] + 1) {
+          clusters[clusters.length - 1].push(val);
+        } else {
+          clusters.push([val]);
+        }
+      });
+
+      // Filter silence clusters by minimum length
+      const fClusters = _.filter(clusters, (cluster) => {
+        return cluster.length >= minClusterLength;
+      });
+
+      // Create the silent regions
+      const silentRegions = _.map(fClusters, (cluster, index) => {
+        // let next = fClusters[index + 1];
+        return {
+          // INSIGHT: Silent regions
+          index,
+          start: cluster[0],
+          end: cluster[cluster.length - 1],
+          // INSIGHT: Talking regions
+          // start: cluster[cluster.length - 1],
+          // end: next ? next[0] : length - 1,
+        };
+      });
+
+      // TODO: Is the inverse of this necessary?
+      // Add an initial region if the audio doesn't start with silence
+      // let firstCluster = fClusters[0];
+      // if (firstCluster && firstCluster[0] != 0) {
+      //   regions.unshift({
+      //     start: 0,
+      //     end: firstCluster[firstCluster.length - 1],
+      //   });
+      // }
+
+      // Filter regions by minimum length
+      const filteredSilentRegions = _.filter(silentRegions, (region) => {
+        return region.end - region.start >= minClusterLength;
+      });
+
+      // Return time-based regions
+      return _.map(filteredSilentRegions, (region) => {
+        return {
+          drag: true,
+          resize: true,
+          minLength: 0.1,
+          color: this.silentRegionColor,
+          start: Math.round(region.start * coef * 10) / 10,
+          end: Math.round(region.end * coef * 10) / 10,
+        };
       });
     },
     getWaveSurferColors(cssVariable) {
@@ -184,12 +225,40 @@ export default {
       };
       this[waveSurferMethods[option]]();
     },
+    createWaveSurfer() {
+      return WaveSurfer.create({
+        height: 200,
+        barHeight: 1,
+        audioRate: 1,
+        // INSIGHT: Normalize wave based on highest peak
+        // normalize: true,
+        fillParent: true,
+        scrollParent: false,
+        mediaControls: false,
+        forceDecode: true,
+        container: '#waveform',
+        backend: 'MediaElement',
+        waveColor: this.getWaveSurferColors('--ws-wave-color'),
+        progressColor: this.getWaveSurferColors('--ws-progress-color'),
+        plugins: [
+          WaveSurferTimeline.create({
+            height: 20,
+            container: '#waveform-timeline',
+            primaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+            secondaryFontColor: this.getWaveSurferColors('--ws-progress-color'),
+          }),
+          WaveSurferRegions.create({
+            regions: [],
+          }),
+        ],
+      });
+    },
   },
   computed: {
     ...mapGetters(['activeTheme', 'fileUrl']),
   },
   watch: {
-    fileUrl: 'setUpWaveSurfer',
+    fileUrl: 'loadWaveSurfer',
   },
 };
 </script>
