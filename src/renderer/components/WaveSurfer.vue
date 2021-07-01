@@ -57,6 +57,7 @@ export default {
   },
   methods: {
     reloadWaveSurfer() {
+      // Maybe remove old wave surfer instance.
       if (!_.isEmpty(this.waveSurfer)) {
         this.waveSurfer.destroy();
       }
@@ -73,6 +74,11 @@ export default {
           Math.floor(duration * 100)
         );
         this.loadRegions(this.extractSilentRegions(peaks, duration));
+      });
+      this.waveSurfer.on('region-in', (region) => {
+        if (this.skipSilentRegions) {
+          this.waveSurfer.play(region.end);
+        }
       });
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
@@ -263,11 +269,17 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['activeTheme', 'fileUrl', 'normalizeAudio']),
+    ...mapGetters([
+      'fileUrl',
+      'activeTheme',
+      'normalizeAudio',
+      'skipSilentRegions',
+    ]),
   },
   watch: {
     fileUrl: 'reloadWaveSurfer',
     normalizeAudio: 'reloadWaveSurfer',
+    skipSilentRegions: 'reloadWaveSurfer',
   },
 };
 </script>
