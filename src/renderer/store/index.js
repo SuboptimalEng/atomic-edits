@@ -14,6 +14,8 @@ export default createStore({
     // Wave Surfer Settings
     normalizeAudio: true,
     skipSilentRegions: true,
+    silenceLength: 0.5,
+    silenceSensitivity: 0.1,
 
     // Global Settings
     activeTheme: 'theme-dark',
@@ -37,6 +39,16 @@ export default createStore({
     },
     toggleSkipSilentRegions(state) {
       state.skipSilentRegions = !state.skipSilentRegions;
+    },
+    setSilenceLength(state, silenceLength) {
+      if (silenceLength >= 0) {
+        state.silenceLength = Math.round(silenceLength * 10) / 10;
+      }
+    },
+    setSilenceSensitivity(state, silenceSensitivity) {
+      if (silenceSensitivity <= 1 && silenceSensitivity >= 0) {
+        state.silenceSensitivity = Math.round(silenceSensitivity * 10) / 10;
+      }
     },
     setActiveTheme(state, activeTheme) {
       state.activeTheme = activeTheme;
@@ -63,6 +75,12 @@ export default createStore({
     },
     skipSilentRegions(state) {
       return state.skipSilentRegions;
+    },
+    silenceLength(state) {
+      return state.silenceLength;
+    },
+    silenceSensitivity(state) {
+      return state.silenceSensitivity;
     },
     activeTheme(state) {
       return state.activeTheme;

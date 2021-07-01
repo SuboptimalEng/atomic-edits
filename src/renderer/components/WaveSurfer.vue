@@ -56,6 +56,14 @@ export default {
     }
   },
   methods: {
+    reloadSilentRegions() {
+      this.waveSurfer.clearRegions();
+      const duration = this.waveSurfer.getDuration();
+      const peaks = this.waveSurfer.backend.getPeaks(
+        Math.floor(duration * 100)
+      );
+      this.loadRegions(this.extractSilentRegions(peaks, duration));
+    },
     reloadWaveSurfer() {
       // Maybe remove old wave surfer instance.
       if (!_.isEmpty(this.waveSurfer)) {
@@ -75,11 +83,7 @@ export default {
         );
         this.loadRegions(this.extractSilentRegions(peaks, duration));
       });
-      this.waveSurfer.on('region-in', (region) => {
-        if (this.skipSilentRegions) {
-          this.waveSurfer.play(region.end);
-        }
-      });
+      this.refreshRegionInEvent();
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
@@ -94,8 +98,8 @@ export default {
       this.regionIds = Object.keys(this.waveSurfer.regions.list);
     },
     extractSilentRegions(peaks, duration) {
-      const silenceLength = 0.5;
-      const silenceSensitivity = 0.1;
+      const silenceLength = this.silenceLength;
+      const silenceSensitivity = this.silenceSensitivity;
       const coef = duration / peaks.length;
       const minClusterLength = silenceLength / coef;
 
@@ -266,6 +270,14 @@ export default {
         ],
       });
     },
+    refreshRegionInEvent() {
+      this.waveSurfer.un('region-in');
+      this.waveSurfer.on('region-in', (region) => {
+        if (this.skipSilentRegions) {
+          this.waveSurfer.play(region.end);
+        }
+      });
+    },
   },
   computed: {
     ...mapGetters([
@@ -273,12 +285,16 @@ export default {
       'activeTheme',
       'normalizeAudio',
       'skipSilentRegions',
+      'silenceLength',
+      'silenceSensitivity',
     ]),
   },
   watch: {
     fileUrl: 'reloadWaveSurfer',
     normalizeAudio: 'reloadWaveSurfer',
-    skipSilentRegions: 'reloadWaveSurfer',
+    skipSilentRegions: 'refreshRegionInEvent',
+    silenceLength: 'reloadSilentRegions',
+    silenceSensitivity: 'reloadSilentRegions',
   },
 };
 </script>
