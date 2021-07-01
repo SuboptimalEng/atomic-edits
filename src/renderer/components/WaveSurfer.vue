@@ -99,34 +99,33 @@ export default {
       const coef = duration / peaks.length;
       const minClusterLength = silenceLength / coef;
 
-      // Gather silence indeces
+      // Gather silence indices
       const silences = [];
-      _.each(peaks, (val, index) => {
-        if (Math.abs(val) <= silenceSensitivity) {
+      _.each(peaks, (peak, index) => {
+        if (Math.abs(peak) <= silenceSensitivity) {
           silences.push(index);
         }
       });
 
-      const clusters = [];
-      _.each(silences, (val, index) => {
-        if (clusters.length && val == silences[index - 1] + 1) {
-          clusters[clusters.length - 1].push(val);
+      const allSilentClusters = [];
+      _.each(silences, (silence, index) => {
+        if (allSilentClusters.length && silence == silences[index - 1] + 1) {
+          allSilentClusters[allSilentClusters.length - 1].push(silence);
         } else {
-          clusters.push([val]);
+          allSilentClusters.push([silence]);
         }
       });
 
       // Filter silence clusters by minimum length
-      const fClusters = _.filter(clusters, (cluster) => {
+      const filteredSilentClusters = _.filter(allSilentClusters, (cluster) => {
         return cluster.length >= minClusterLength;
       });
 
       // Create the silent regions
-      const silentRegions = _.map(fClusters, (cluster, index) => {
+      const silentRegions = _.map(filteredSilentClusters, (cluster) => {
         // let next = fClusters[index + 1];
         return {
           // INSIGHT: Silent regions
-          index,
           start: cluster[0],
           end: cluster[cluster.length - 1],
           // INSIGHT: Talking regions
