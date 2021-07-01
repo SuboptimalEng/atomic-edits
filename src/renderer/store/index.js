@@ -47,7 +47,7 @@ export default createStore({
     },
     setSilenceSensitivity(state, silenceSensitivity) {
       if (silenceSensitivity <= 1 && silenceSensitivity >= 0) {
-        state.silenceSensitivity = Math.round(silenceSensitivity * 10) / 10;
+        state.silenceSensitivity = Math.round(silenceSensitivity * 100) / 100;
       }
     },
     setActiveTheme(state, activeTheme) {

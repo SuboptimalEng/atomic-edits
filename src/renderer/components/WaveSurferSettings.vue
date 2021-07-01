@@ -101,10 +101,10 @@ export default {
           name: 'silenceSensitivity',
           methodName: 'setSilenceSensitivity',
           decrement: () => {
-            this.setSilenceSensitivity(this.silenceSensitivity - 0.1);
+            this.setSilenceSensitivity(this.silenceSensitivity - 0.05);
           },
           increment: () => {
-            this.setSilenceSensitivity(this.silenceSensitivity + 0.1);
+            this.setSilenceSensitivity(this.silenceSensitivity + 0.05);
           },
           text: 'Silence Sensitivity',
           help: 'Indicates how much random noise will be part of the silence detection algorithm.',
