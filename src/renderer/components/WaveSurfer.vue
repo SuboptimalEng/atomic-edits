@@ -77,6 +77,9 @@ export default {
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
+
+      // Display play button when wavesurfer is reloaded.
+      this.togglePlayPauseButton('play');
     },
     loadRegions(regions) {
       _.each(regions, (region) => {
