@@ -94,7 +94,7 @@ export default {
             }
             this.setSilenceLength(this.silenceLength + delta);
           },
-          text: 'Length of Silence',
+          text: 'Min. Length of Silence',
           help: 'Indicates how long each silent region will be.',
         },
         {
