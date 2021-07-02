@@ -1,7 +1,7 @@
 // const { contextBridge, ipcRenderer } = require('electron');
 import { contextBridge, ipcRenderer } from 'electron';
 
-const validOnChannels = ['MAYBE_REMOVE_REGION'];
+const validOnChannels = ['REMOVE_REGION'];
 const validSendChannels = ['REGION_CONTEXT_MENU'];
 
 contextBridge.exposeInMainWorld('ipc', {

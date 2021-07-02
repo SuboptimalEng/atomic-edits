@@ -56,19 +56,7 @@ ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
     {
       label: 'Remove',
       click: () => {
-        const clickedButtonIdx = dialog.showMessageBoxSync({
-          type: 'question',
-          message: 'Are you sure you want to remove this region?',
-          buttons: ['Yes', 'No'],
-        });
-        let removeRegion = false;
-        if (clickedButtonIdx === 0) {
-          removeRegion = true;
-        }
-        event.reply('MAYBE_REMOVE_REGION', {
-          ...payload,
-          removeRegion,
-        });
+        event.reply('REMOVE_REGION', payload);
       },
     },
   ];

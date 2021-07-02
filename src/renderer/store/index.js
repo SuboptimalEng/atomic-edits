@@ -11,16 +11,17 @@ export default createStore({
     fileName: '',
     fileType: '',
 
+    // Global Settings
+    activeTheme: 'theme-dark',
+    activeSetting: 'wave-surfer-settings',
+
     // Wave Surfer Settings
     normalizeAudio: true,
     skipSilentRegions: true,
     silenceLength: 0.5,
     silencePadding: 0,
     silenceSensitivity: 0.1,
-
-    // Global Settings
-    activeTheme: 'theme-dark',
-    activeSetting: 'wave-surfer-settings',
+    removedRegions: [],
   },
   mutations: {
     setFileUrl(state, fileUrl) {
@@ -34,6 +35,12 @@ export default createStore({
     },
     setFileType(state, fileType) {
       state.fileType = fileType;
+    },
+    setActiveTheme(state, activeTheme) {
+      state.activeTheme = activeTheme;
+    },
+    setActiveSetting(state, activeSetting) {
+      state.activeSetting = activeSetting;
     },
     toggleNormalizeAudio(state) {
       state.normalizeAudio = !state.normalizeAudio;
@@ -54,11 +61,12 @@ export default createStore({
         state.silenceSensitivity = Math.round(silenceSensitivity * 100) / 100;
       }
     },
-    setActiveTheme(state, activeTheme) {
-      state.activeTheme = activeTheme;
+    storeRemovedRegion(state, region) {
+      state.removedRegions.push(region);
     },
-    setActiveSetting(state, activeSetting) {
-      state.activeSetting = activeSetting;
+    restoreRemovedRegion(state) {
+      const region = state.removedRegions.pop();
+      return region;
     },
   },
   getters: {
@@ -73,6 +81,12 @@ export default createStore({
     },
     fileType(state) {
       return state.fileType;
+    },
+    activeTheme(state) {
+      return state.activeTheme;
+    },
+    activeSetting(state) {
+      return state.activeSetting;
     },
     normalizeAudio(state) {
       return state.normalizeAudio;
@@ -89,11 +103,9 @@ export default createStore({
     silenceSensitivity(state) {
       return state.silenceSensitivity;
     },
-    activeTheme(state) {
-      return state.activeTheme;
-    },
-    activeSetting(state) {
-      return state.activeSetting;
+    removedRegions(state) {
+      // INSIGHT: get a clone of the object for watcher
+      return Object.assign({}, state.removedRegions);
     },
   },
   actions: {},

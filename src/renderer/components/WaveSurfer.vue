@@ -24,7 +24,7 @@ import _ from 'lodash';
 import WaveSurfer from 'wavesurfer.js';
 import WaveSurferRegions from 'wavesurfer.js/dist/plugin/wavesurfer.regions.js';
 import WaveSurferTimeline from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.js';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 // INSIGHT: Get tailwind variables like this.
 // import resolveConfig from 'tailwindcss/resolveConfig';
 // import tailwindConfig from '../../../tailwind.config.js';
@@ -55,13 +55,22 @@ export default {
       this.reloadWaveSurfer();
     }
 
-    window.ipc.on('MAYBE_REMOVE_REGION', (payload) => {
-      if (payload.removeRegion) {
-        this.waveSurfer.regions.list[payload.regionId].remove();
-      }
+    window.ipc.on('REMOVE_REGION', (payload) => {
+      const region = this.waveSurfer.regions.list[payload.regionId];
+      this.storeRemovedRegion({
+        drag: true,
+        resize: true,
+        minLength: 0.5,
+        color: this.silentRegionColor,
+        start: region.start,
+        end: region.end,
+      });
+      region.remove();
     });
   },
   methods: {
+    ...mapMutations(['storeRemovedRegion']),
+
     recalculateSilentRegions() {
       this.waveSurfer.clearRegions();
       const duration = this.waveSurfer.getDuration();
@@ -332,6 +341,7 @@ export default {
       'silenceLength',
       'silencePadding',
       'silenceSensitivity',
+      'removedRegions',
     ]),
   },
   watch: {
@@ -342,6 +352,17 @@ export default {
     silenceLength: 'recalculateSilentRegions',
     silencePadding: 'addPaddingToSilentRegions',
     silenceSensitivity: 'recalculateSilentRegions',
+
+    removedRegions: {
+      handler(newValue, oldValue) {
+        const newRemovedRegionsLen = Object.keys(newValue).length;
+        const oldRemovedRegionsLen = Object.keys(oldValue).length;
+        if (newRemovedRegionsLen < oldRemovedRegionsLen) {
+          const region = oldValue[oldRemovedRegionsLen - 1];
+          this.waveSurfer.addRegion(region);
+        }
+      },
+    },
   },
 };
 </script>

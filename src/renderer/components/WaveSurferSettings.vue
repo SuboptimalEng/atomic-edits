@@ -45,6 +45,22 @@
           <fa v-else icon="square" />
         </button>
       </div>
+      <div
+        v-for="miscSetting in miscSettings"
+        :key="miscSetting.text"
+        class="flex justify-between place-items-center"
+      >
+        <div>
+          {{ miscSetting.text }}
+        </div>
+
+        <button
+          @click="this[miscSetting.methodName]()"
+          class="focus:outline-none hover:text-primary-hover"
+        >
+          <fa :icon="miscSetting.icon" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +86,13 @@ export default {
         //   text: 'Normalize Audio',
         //   icon: 'toggle-on',
         // },
+      ],
+      miscSettings: [
+        {
+          methodName: 'restoreRemovedRegion',
+          text: 'Restore Removed Region',
+          icon: 'caret-square-left',
+        },
       ],
       silenceSettings: [
         {
@@ -128,6 +151,7 @@ export default {
       'setSilenceLength',
       'setSilencePadding',
       'setSilenceSensitivity',
+      'restoreRemovedRegion',
     ]),
   },
   computed: {
