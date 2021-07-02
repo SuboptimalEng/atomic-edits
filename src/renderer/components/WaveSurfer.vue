@@ -56,7 +56,7 @@ export default {
     }
   },
   methods: {
-    reloadSilentRegions() {
+    recalculateSilentRegions() {
       this.waveSurfer.clearRegions();
       const duration = this.waveSurfer.getDuration();
       const peaks = this.waveSurfer.backend.getPeaks(
@@ -158,7 +158,7 @@ export default {
         return {
           drag: true,
           resize: true,
-          minLength: 0.1,
+          minLength: 0.5,
           color: this.silentRegionColor,
           start: Math.round(region.start * coef * 10) / 10,
           end: Math.round(region.end * coef * 10) / 10,
@@ -278,6 +278,39 @@ export default {
         }
       });
     },
+    addPaddingToSilentRegions(newValue, oldValue) {
+      const silentRegions = [];
+      if (newValue - oldValue > 0) {
+        // decrease silence region by 0.2s
+        _.each(this.waveSurfer.regions.list, (region) => {
+          const start = Math.round((region.start + 0.1) * 10) / 10;
+          const end = Math.round((region.end - 0.1) * 10) / 10;
+          // INSIGHT: If the new silent region is too small, do not update it.
+          if (end - start >= 0.5) {
+            silentRegions.push({
+              ...region,
+              start,
+              end,
+            });
+          } else {
+            silentRegions.push({
+              ...region,
+            });
+          }
+        });
+      } else {
+        // increase silence region by 0.2s
+        _.each(this.waveSurfer.regions.list, (region) => {
+          silentRegions.push({
+            ...region,
+            start: Math.round((region.start - 0.1) * 10) / 10,
+            end: Math.round((region.end + 0.1) * 10) / 10,
+          });
+        });
+      }
+      this.waveSurfer.clearRegions();
+      this.loadRegions(silentRegions);
+    },
   },
   computed: {
     ...mapGetters([
@@ -286,6 +319,7 @@ export default {
       'normalizeAudio',
       'skipSilentRegions',
       'silenceLength',
+      'silencePadding',
       'silenceSensitivity',
     ]),
   },
@@ -293,8 +327,10 @@ export default {
     fileUrl: 'reloadWaveSurfer',
     normalizeAudio: 'reloadWaveSurfer',
     skipSilentRegions: 'refreshRegionInEvent',
-    silenceLength: 'reloadSilentRegions',
-    silenceSensitivity: 'reloadSilentRegions',
+
+    silenceLength: 'recalculateSilentRegions',
+    silencePadding: 'addPaddingToSilentRegions',
+    silenceSensitivity: 'recalculateSilentRegions',
   },
 };
 </script>

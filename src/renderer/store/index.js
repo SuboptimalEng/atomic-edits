@@ -15,6 +15,7 @@ export default createStore({
     normalizeAudio: true,
     skipSilentRegions: true,
     silenceLength: 0.5,
+    silencePadding: 0,
     silenceSensitivity: 0.1,
 
     // Global Settings
@@ -41,9 +42,12 @@ export default createStore({
       state.skipSilentRegions = !state.skipSilentRegions;
     },
     setSilenceLength(state, silenceLength) {
-      if (silenceLength >= 0) {
+      if (silenceLength >= 0.5) {
         state.silenceLength = Math.round(silenceLength * 10) / 10;
       }
+    },
+    setSilencePadding(state, silencePadding) {
+      state.silencePadding = Math.round(silencePadding * 10) / 10;
     },
     setSilenceSensitivity(state, silenceSensitivity) {
       if (silenceSensitivity <= 1 && silenceSensitivity >= 0) {
@@ -78,6 +82,9 @@ export default createStore({
     },
     silenceLength(state) {
       return state.silenceLength;
+    },
+    silencePadding(state) {
+      return state.silencePadding;
     },
     silenceSensitivity(state) {
       return state.silenceSensitivity;

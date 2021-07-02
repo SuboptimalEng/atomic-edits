@@ -63,17 +63,17 @@ export default {
           text: 'Skip Silent Regions',
           icon: 'toggle-on',
         },
-        {
-          name: 'normalizeAudio',
-          methodName: 'toggleNormalizeAudio',
-          text: 'Normalize Audio',
-          icon: 'toggle-on',
-        },
+        // TODO: Maybe add this in for v0.2
+        // {
+        //   name: 'normalizeAudio',
+        //   methodName: 'toggleNormalizeAudio',
+        //   text: 'Normalize Audio',
+        //   icon: 'toggle-on',
+        // },
       ],
       silenceSettings: [
         {
           name: 'silenceLength',
-          methodName: 'setSilenceLength',
           decrement: () => {
             let delta = 0.5;
             if (this.silenceLength <= 4.1) {
@@ -99,7 +99,6 @@ export default {
         },
         {
           name: 'silenceSensitivity',
-          methodName: 'setSilenceSensitivity',
           decrement: () => {
             this.setSilenceSensitivity(this.silenceSensitivity - 0.05);
           },
@@ -109,6 +108,16 @@ export default {
           text: 'Silence Sensitivity',
           help: 'Indicates how much random noise will be part of the silence detection algorithm.',
         },
+        {
+          name: 'silencePadding',
+          decrement: () => {
+            this.setSilencePadding(this.silencePadding - 0.2);
+          },
+          increment: () => {
+            this.setSilencePadding(this.silencePadding + 0.2);
+          },
+          text: 'Silence Padding',
+        },
       ],
     };
   },
@@ -117,6 +126,7 @@ export default {
       'toggleNormalizeAudio',
       'toggleSkipSilentRegions',
       'setSilenceLength',
+      'setSilencePadding',
       'setSilenceSensitivity',
     ]),
   },
@@ -125,6 +135,7 @@ export default {
       'normalizeAudio',
       'skipSilentRegions',
       'silenceLength',
+      'silencePadding',
       'silenceSensitivity',
     ]),
   },
