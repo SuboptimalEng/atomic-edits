@@ -47,6 +47,37 @@ app.on('window-all-closed', () => {
   }
 });
 
+/* ================================================================ */
+/* ================================================================ */
+import { ipcMain, Menu, dialog } from 'electron';
+
+ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
+  const template = [
+    {
+      label: 'Remove',
+      click: () => {
+        const clickedButtonIdx = dialog.showMessageBoxSync({
+          type: 'question',
+          message: 'Are you sure you want to remove this region?',
+          buttons: ['Yes', 'No'],
+        });
+        let removeRegion = false;
+        if (clickedButtonIdx === 0) {
+          removeRegion = true;
+        }
+        event.reply('MAYBE_REMOVE_REGION', {
+          ...payload,
+          removeRegion,
+        });
+      },
+    },
+  ];
+  const menu = Menu.buildFromTemplate(template);
+  menu.popup(BrowserWindow.fromWebContents(event.sender));
+});
+/* ================================================================ */
+/* ================================================================ */
+
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.

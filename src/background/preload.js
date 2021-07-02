@@ -1,8 +1,8 @@
 // const { contextBridge, ipcRenderer } = require('electron');
 import { contextBridge, ipcRenderer } from 'electron';
 
-const validOnChannels = ['SELECT_FILE', 'EXPORT_VIDEO'];
-const validSendChannels = ['SELECT_FILE', 'EXPORT_VIDEO'];
+const validOnChannels = ['MAYBE_REMOVE_REGION'];
+const validSendChannels = ['REGION_CONTEXT_MENU'];
 
 contextBridge.exposeInMainWorld('ipc', {
   send: (channel, data) => {

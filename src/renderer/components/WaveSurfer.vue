@@ -54,6 +54,12 @@ export default {
     if (!_.isEmpty(this.fileUrl)) {
       this.reloadWaveSurfer();
     }
+
+    window.ipc.on('MAYBE_REMOVE_REGION', (payload) => {
+      if (payload.removeRegion) {
+        this.waveSurfer.regions.list[payload.regionId].remove();
+      }
+    });
   },
   methods: {
     recalculateSilentRegions() {
@@ -84,6 +90,12 @@ export default {
         this.loadRegions(this.extractSilentRegions(peaks, duration));
       });
       this.refreshRegionInEvent();
+      this.waveSurfer.on('region-contextmenu', (region) => {
+        // TODO: Prevent region dragging when context menu is open.
+        window.ipc.send('REGION_CONTEXT_MENU', {
+          regionId: region.id,
+        });
+      });
       this.waveSurfer.on('finish', () => {
         this.togglePlayPauseButton('play');
       });
@@ -95,7 +107,6 @@ export default {
       _.each(regions, (region) => {
         this.waveSurfer.addRegion(region);
       });
-      this.regionIds = Object.keys(this.waveSurfer.regions.list);
     },
     extractSilentRegions(peaks, duration) {
       const silenceLength = this.silenceLength;
