@@ -29,6 +29,9 @@ import { mapGetters, mapMutations } from 'vuex';
 // import resolveConfig from 'tailwindcss/resolveConfig';
 // import tailwindConfig from '../../../tailwind.config.js';
 
+import hotkeys from 'hotkeys-js';
+import { KEYBOARD_SHORTCUTS } from '../shared/constants.js';
+
 export default {
   name: 'WaveSurfer',
   data() {
@@ -54,6 +57,12 @@ export default {
     if (!_.isEmpty(this.fileUrl)) {
       this.reloadWaveSurfer();
     }
+
+    KEYBOARD_SHORTCUTS.forEach((command) => {
+      const keybinding = command['default'];
+      // INSIGHT: dynamically call vue methods => this[command.name]()
+      hotkeys(keybinding, () => this[command.name]());
+    });
 
     window.ipc.on('REMOVE_REGION', (payload) => {
       const region = this.waveSurfer.regions.list[payload.regionId];
@@ -218,6 +227,13 @@ export default {
     },
     skipForward() {
       this.waveSurfer.skipForward(5);
+    },
+    togglePlayPause() {
+      if (this.waveSurfer.isPlaying()) {
+        this.pause();
+      } else {
+        this.play();
+      }
     },
     togglePlayPauseButton(icon) {
       const playOrPause = ['play', 'pause'];
