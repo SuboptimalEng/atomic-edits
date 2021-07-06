@@ -1,4 +1,4 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import { createStore } from 'vuex';
 
 // TODO: Refactor this
@@ -107,7 +107,8 @@ export default createStore({
     },
     removedRegions(state) {
       // INSIGHT: get a clone of the object for watcher
-      return Object.assign({}, state.removedRegions);
+      // return Object.assign({}, state.removedRegions);
+      return _.cloneDeep(state.removedRegions);
     },
   },
   actions: {},

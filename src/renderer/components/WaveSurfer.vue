@@ -45,6 +45,7 @@ export default {
         { icon: 'step-forward' },
         { icon: 'search-minus' },
         { icon: 'search-plus' },
+        { icon: 'download' },
       ],
     };
   },
@@ -275,8 +276,29 @@ export default {
         'search-minus': 'zoomOut',
         'volume-down': 'lowerVolume',
         'volume-up': 'increaseVolume',
+        download: 'exportAudioOrVideo',
       };
       this[waveSurferMethods[option]]();
+    },
+    isAudioFile() {
+      return this.fileType.includes('audio');
+    },
+    exportAudioOrVideo() {
+      const sendChannel = this.isAudioFile() ? 'EXPORT_AUDIO' : 'EXPORT_VIDEO';
+      const silentRegions = [];
+      _.each(this.waveSurfer.regions.list, (region) => {
+        silentRegions.push({
+          regionId: region.id,
+          start: region.start,
+          end: region.end,
+        });
+      });
+      window.ipc.send(sendChannel, {
+        fileUrl: this.fileUrl,
+        data: 'export video',
+        duration: this.waveSurfer.getDuration(),
+        silentRegions: _.cloneDeep(silentRegions),
+      });
     },
     createWaveSurfer() {
       return WaveSurfer.create({
@@ -352,6 +374,7 @@ export default {
   computed: {
     ...mapGetters([
       'fileUrl',
+      'fileType',
       'activeTheme',
       'normalizeAudio',
       'skipSilentRegions',
