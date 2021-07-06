@@ -25,7 +25,7 @@ import { mapMutations } from 'vuex';
 import { KEYBOARD_SHORTCUTS } from '../shared/constants.js';
 
 export default {
-  name: 'Settings',
+  name: 'GlobalSettings',
   data() {
     return {
       showThemeSelection: false,

@@ -31,6 +31,11 @@ export default {
           icon: 'video',
         },
         {
+          section: 'export-settings',
+          isActive: false,
+          icon: 'download',
+        },
+        {
           section: 'global-settings',
           isActive: false,
           icon: 'cog',
