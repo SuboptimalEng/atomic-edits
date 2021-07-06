@@ -294,6 +294,7 @@ export default {
         });
       });
       window.ipc.send(sendChannel, {
+        filePath: this.filePath,
         duration: this.waveSurfer.getDuration(),
         silentRegions: _.cloneDeep(silentRegions),
       });
@@ -372,6 +373,7 @@ export default {
   computed: {
     ...mapGetters([
       'fileUrl',
+      'filePath',
       'fileType',
       'activeTheme',
       'normalizeAudio',

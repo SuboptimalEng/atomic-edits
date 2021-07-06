@@ -57,7 +57,7 @@ import { ipcMain, Menu, dialog } from 'electron';
 // INSIGHT: Replace app.asar <- no idea what this is doin...
 ffmpeg.setFfmpegPath(ffmpegPath.path.replace('app.asar', 'app.asar.unpacked'));
 
-const mergeSilentRegions = (silentRegions) => {
+const getMergedSilentRegions = (silentRegions) => {
   if (silentRegions.length <= 1) {
     return silentRegions;
   }
@@ -88,6 +88,48 @@ const mergeSilentRegions = (silentRegions) => {
   return res;
 };
 
+const getRegionsToClip = (silentRegions, videoLength) => {
+  const regionsToClip = [];
+  const numberOfSilentRegions = silentRegions.length;
+
+  // If there are no silent regions in the video then clip
+  // the entire video.
+  if (numberOfSilentRegions === 0) {
+    regionsToClip.push({ start: 0, end: videoLength });
+    return regionsToClip;
+  }
+
+  // If the first silent region does not start from the beginning
+  // of the video, then clip from the beginning of the video till
+  // the start of the first region.
+  if (silentRegions[0].start !== 0) {
+    regionsToClip.push({
+      start: 0,
+      end: silentRegions[0].start,
+    });
+  }
+
+  _.each(silentRegions, (silentRegion, idx) => {
+    if (idx + 1 >= numberOfSilentRegions) {
+      // Check if the last silent region ends at the end of the video.
+      // If not, then add the end of the video.
+      if (silentRegion.end !== videoLength) {
+        regionsToClip.push({
+          start: silentRegion.end,
+          end: videoLength,
+        });
+      }
+    } else {
+      regionsToClip.push({
+        start: silentRegion.end,
+        end: silentRegions[idx + 1].start,
+      });
+    }
+  });
+
+  return regionsToClip;
+};
+
 ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   const template = [
     {
@@ -101,6 +143,15 @@ ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   menu.popup(BrowserWindow.fromWebContents(event.sender));
 });
 
+const getVideoAudioFilter = (regionsToClip) => {
+  const videoAudioFilterArray = [];
+  _.each(regionsToClip, (region) => {
+    videoAudioFilterArray.push(`between(t,${region.start},${region.end})`);
+  });
+  const videoAudioFilter = videoAudioFilterArray.join('+');
+  return videoAudioFilter;
+};
+
 ipcMain.on('EXPORT_AUDIO', (event, payload) => {
   // TODO: Finish export audio method
 });
@@ -111,16 +162,27 @@ ipcMain.on('EXPORT_VIDEO', (event, payload) => {
     console.log('No file selected.');
     return;
   }
-  const duration = payload.duration;
+  const originalFilePath = payload.filePath;
+  const videoLength = payload.duration;
   const silentRegions = payload.silentRegions;
   const pathToOutputFile = filePath.concat('.mp4');
-  const mergedSilentRegions = mergeSilentRegions(silentRegions);
+  const mergedSilentRegions = getMergedSilentRegions(silentRegions);
+  const regionsToClip = getRegionsToClip(mergedSilentRegions, videoLength);
+  const videoAudioFilter = getVideoAudioFilter(regionsToClip);
   console.log({
-    duration,
+    originalFilePath,
+    videoLength,
     pathToOutputFile,
     silentRegions,
     mergedSilentRegions,
+    regionsToClip,
+    videoAudioFilter,
   });
+
+  ffmpeg(originalFilePath)
+    .videoFilters([`select='${videoAudioFilter}'`, 'setpts=N/FRAME_RATE/TB'])
+    .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
+    .save(pathToOutputFile);
 });
 
 /* ================================================================ */
