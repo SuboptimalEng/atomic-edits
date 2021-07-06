@@ -23,16 +23,9 @@ export default {
     isAudioFile() {
       return this.fileType.includes('audio');
     },
-    onFileTypeChange() {
-      // TODO: maybe change image when user changes file
-      console.log('file type changed');
-    },
   },
   computed: {
     ...mapGetters(['fileUrl', 'fileType']),
-  },
-  watch: {
-    fileType: 'onFileTypeChange',
   },
 };
 </script>
