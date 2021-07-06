@@ -52,10 +52,41 @@ app.on('window-all-closed', () => {
 import _ from 'lodash';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';
+import { ipcMain, Menu, dialog } from 'electron';
+
 // INSIGHT: Replace app.asar <- no idea what this is doin...
 ffmpeg.setFfmpegPath(ffmpegPath.path.replace('app.asar', 'app.asar.unpacked'));
 
-import { ipcMain, Menu, dialog } from 'electron';
+const mergeSilentRegions = (silentRegions) => {
+  if (silentRegions.length <= 1) {
+    return silentRegions;
+  }
+  const sortedSilentRegions = _.orderBy(silentRegions, 'start', 'asc');
+  const res = [];
+  let start = sortedSilentRegions[0].start;
+  let end = sortedSilentRegions[0].end;
+  const roundToTens = (num) => {
+    return Math.round(num * 10) / 10;
+  };
+  _.each(sortedSilentRegions, (region) => {
+    if (region.start <= end) {
+      end = Math.max(end, region.end);
+    } else {
+      res.push({
+        start: roundToTens(start),
+        end: roundToTens(end),
+      });
+      start = region.start;
+      end = region.end;
+    }
+  });
+  res.push({
+    start: roundToTens(start),
+    end: roundToTens(end),
+  });
+
+  return res;
+};
 
 ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   const template = [
@@ -70,17 +101,26 @@ ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   menu.popup(BrowserWindow.fromWebContents(event.sender));
 });
 
-ipcMain.on('EXPORT_VIDEO', (event, payload) => {
-  console.log(payload);
+ipcMain.on('EXPORT_AUDIO', (event, payload) => {
+  // TODO: Finish export audio method
+});
 
+ipcMain.on('EXPORT_VIDEO', (event, payload) => {
   const filePath = dialog.showSaveDialogSync(win);
-  console.log(filePath);
   if (_.isEmpty(filePath)) {
     console.log('No file selected.');
     return;
   }
+  const duration = payload.duration;
+  const silentRegions = payload.silentRegions;
   const pathToOutputFile = filePath.concat('.mp4');
-  console.log(pathToOutputFile);
+  const mergedSilentRegions = mergeSilentRegions(silentRegions);
+  console.log({
+    duration,
+    pathToOutputFile,
+    silentRegions,
+    mergedSilentRegions,
+  });
 });
 
 /* ================================================================ */

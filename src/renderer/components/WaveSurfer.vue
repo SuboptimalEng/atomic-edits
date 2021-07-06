@@ -74,7 +74,8 @@ export default {
         color: this.silentRegionColor,
         start: region.start,
         end: region.end,
-        regionId: payload.regionId,
+        // TODO: Is this needed since adding region should create new id?
+        // regionId: payload.regionId,
       });
       region.remove();
     });
@@ -288,14 +289,11 @@ export default {
       const silentRegions = [];
       _.each(this.waveSurfer.regions.list, (region) => {
         silentRegions.push({
-          regionId: region.id,
           start: region.start,
           end: region.end,
         });
       });
       window.ipc.send(sendChannel, {
-        fileUrl: this.fileUrl,
-        data: 'export video',
         duration: this.waveSurfer.getDuration(),
         silentRegions: _.cloneDeep(silentRegions),
       });
