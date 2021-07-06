@@ -10,7 +10,7 @@ module.exports = {
       rendererProcessFile: 'src/renderer/main.js',
 
       // INSIGHT: FFMPEG webpack import issue
-      // externals: ['@ffmpeg-installer/ffmpeg'],
+      externals: ['@ffmpeg-installer/ffmpeg'],
 
       // INSIGHT: What does this do lol?
       // extraFiles: {
@@ -19,12 +19,12 @@ module.exports = {
       // },
 
       // INSIGHT: FFMPEG Issue
-      // chainWebpackMainProcess: (config) => {
-      //   config.plugin('define').tap((args) => {
-      //     args[0]['process.env.FLUENTFFMPEG_COV'] = false;
-      //     return args;
-      //   });
-      // },
+      chainWebpackMainProcess: (config) => {
+        config.plugin('define').tap((args) => {
+          args[0]['process.env.FLUENTFFMPEG_COV'] = false;
+          return args;
+        });
+      },
     },
   },
 };

@@ -49,6 +49,11 @@ app.on('window-all-closed', () => {
 
 /* ================================================================ */
 /* ================================================================ */
+import * as ffmpeg from 'fluent-ffmpeg';
+import * as ffmpegPath from '@ffmpeg-installer/ffmpeg';
+// INSIGHT: Replace app.asar <- no idea what this is doin...
+ffmpeg.setFfmpegPath(ffmpegPath.path.replace('app.asar', 'app.asar.unpacked'));
+
 import { ipcMain, Menu, dialog } from 'electron';
 
 ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
