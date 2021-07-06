@@ -1,3 +1,4 @@
+// import _ from 'lodash';
 import { createStore } from 'vuex';
 
 // TODO: Refactor this
@@ -16,6 +17,7 @@ export default createStore({
     activeSetting: 'wave-surfer-settings',
 
     // Wave Surfer Settings
+    duration: undefined,
     normalizeAudio: true,
     skipSilentRegions: true,
     silenceLength: 0.5,

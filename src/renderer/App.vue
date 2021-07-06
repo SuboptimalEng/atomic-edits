@@ -11,8 +11,6 @@
               <GlobalSettings
                 v-if="activeSetting === 'global-settings'"
               ></GlobalSettings>
-              <ExportSettings v-if="activeSetting === 'export-settings'">
-              </ExportSettings>
               <WaveSurferSettings
                 v-if="activeSetting === 'wave-surfer-settings'"
               ></WaveSurferSettings>
@@ -41,7 +39,6 @@ import LoadFile from './components/LoadFile.vue';
 import WaveSurfer from './components/WaveSurfer.vue';
 import VideoDisplay from './components/VideoDisplay.vue';
 import GlobalSettings from './components/GlobalSettings.vue';
-import ExportSettings from './components/ExportSettings.vue';
 import WaveSurferSettings from './components/WaveSurferSettings.vue';
 
 import { mapGetters } from 'vuex';
@@ -54,7 +51,6 @@ export default {
     WaveSurfer,
     VideoDisplay,
     GlobalSettings,
-    ExportSettings,
     WaveSurferSettings,
   },
   methods: {

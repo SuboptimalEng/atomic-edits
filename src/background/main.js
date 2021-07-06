@@ -49,8 +49,9 @@ app.on('window-all-closed', () => {
 
 /* ================================================================ */
 /* ================================================================ */
-import * as ffmpeg from 'fluent-ffmpeg';
-import * as ffmpegPath from '@ffmpeg-installer/ffmpeg';
+import _ from 'lodash';
+import ffmpeg from 'fluent-ffmpeg';
+import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 // INSIGHT: Replace app.asar <- no idea what this is doin...
 ffmpeg.setFfmpegPath(ffmpegPath.path.replace('app.asar', 'app.asar.unpacked'));
 
@@ -68,6 +69,20 @@ ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   const menu = Menu.buildFromTemplate(template);
   menu.popup(BrowserWindow.fromWebContents(event.sender));
 });
+
+ipcMain.on('EXPORT_VIDEO', (event, payload) => {
+  console.log(payload);
+
+  const filePath = dialog.showSaveDialogSync(win);
+  console.log(filePath);
+  if (_.isEmpty(filePath)) {
+    console.log('No file selected.');
+    return;
+  }
+  const pathToOutputFile = filePath.concat('.mp4');
+  console.log(pathToOutputFile);
+});
+
 /* ================================================================ */
 /* ================================================================ */
 

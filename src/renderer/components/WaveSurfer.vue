@@ -73,6 +73,7 @@ export default {
         color: this.silentRegionColor,
         start: region.start,
         end: region.end,
+        regionId: payload.regionId,
       });
       region.remove();
     });
