@@ -152,11 +152,7 @@ const getVideoAudioFilter = (regionsToClip) => {
   return videoAudioFilter;
 };
 
-ipcMain.on('EXPORT_AUDIO', (event, payload) => {
-  // TODO: Finish export audio method
-});
-
-ipcMain.on('EXPORT_VIDEO', (event, payload) => {
+ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   const filePath = dialog.showSaveDialogSync(win);
   if (_.isEmpty(filePath)) {
     console.log('No file selected.');
@@ -165,24 +161,30 @@ ipcMain.on('EXPORT_VIDEO', (event, payload) => {
   const originalFilePath = payload.filePath;
   const videoLength = payload.duration;
   const silentRegions = payload.silentRegions;
-  const pathToOutputFile = filePath.concat('.mp4');
   const mergedSilentRegions = getMergedSilentRegions(silentRegions);
   const regionsToClip = getRegionsToClip(mergedSilentRegions, videoLength);
   const videoAudioFilter = getVideoAudioFilter(regionsToClip);
   console.log({
     originalFilePath,
     videoLength,
-    pathToOutputFile,
     silentRegions,
     mergedSilentRegions,
     regionsToClip,
     videoAudioFilter,
   });
 
-  ffmpeg(originalFilePath)
-    .videoFilters([`select='${videoAudioFilter}'`, 'setpts=N/FRAME_RATE/TB'])
-    .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
-    .save(pathToOutputFile);
+  if (payload.exportType === 'exportVideo') {
+    const pathToOutputFile = filePath.concat('.mp4');
+    ffmpeg(originalFilePath)
+      .videoFilters([`select='${videoAudioFilter}'`, 'setpts=N/FRAME_RATE/TB'])
+      .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
+      .save(pathToOutputFile);
+  } else {
+    const pathToOutputFile = filePath.concat('.mp3');
+    ffmpeg(originalFilePath)
+      .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
+      .save(pathToOutputFile);
+  }
 });
 
 /* ================================================================ */

@@ -285,7 +285,6 @@ export default {
       return this.fileType.includes('audio');
     },
     exportAudioOrVideo() {
-      const sendChannel = this.isAudioFile() ? 'EXPORT_AUDIO' : 'EXPORT_VIDEO';
       const silentRegions = [];
       _.each(this.waveSurfer.regions.list, (region) => {
         silentRegions.push({
@@ -293,7 +292,7 @@ export default {
           end: region.end,
         });
       });
-      window.ipc.send(sendChannel, {
+      window.ipc.send('EXPORT_AUDIO_OR_VIDEO', {
         filePath: this.filePath,
         duration: this.waveSurfer.getDuration(),
         silentRegions: _.cloneDeep(silentRegions),
