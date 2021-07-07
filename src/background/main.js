@@ -188,6 +188,9 @@ ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   if (payload.exportType === 'exportVideo') {
     const pathToOutputFile = filePath.concat('.mp4');
     command = ffmpeg(originalFilePath)
+      .on('error', function(err) {
+        console.log('An error occurred: ' + err.message, err);
+      })
       .on('start', () => {
         event.reply('EXPORT_STARTED');
       })
@@ -205,6 +208,9 @@ ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   } else {
     const pathToOutputFile = filePath.concat('.mp3');
     command = ffmpeg(originalFilePath)
+      .on('error', function(err) {
+        console.log('An error occurred: ' + err.message, err);
+      })
       .on('start', () => {
         event.reply('EXPORT_STARTED');
       })
