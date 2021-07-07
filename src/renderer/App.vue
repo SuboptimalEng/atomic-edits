@@ -1,7 +1,12 @@
 <template>
   <div :class="activeTheme">
     <div class="font-sans antialiased min-h-screen bg-primary text-secondary">
-      <div v-if="fileExists()">
+      <div v-if="showExportingUI">
+        <div class="m-4 absolute top-0 bottom-0 left-0 right-0">
+          <ExportingUI></ExportingUI>
+        </div>
+      </div>
+      <div v-else-if="fileExists()">
         <div class="m-4 absolute top-0 bottom-72 left-0 right-0">
           <div class="absolute border top-0 bottom-0 left-0 right-96">
             <VideoDisplay></VideoDisplay>
@@ -37,6 +42,7 @@
 import Sidebar from './components/Sidebar.vue';
 import LoadFile from './components/LoadFile.vue';
 import WaveSurfer from './components/WaveSurfer.vue';
+import ExportingUI from './components/ExportingUI.vue';
 import VideoDisplay from './components/VideoDisplay.vue';
 import GlobalSettings from './components/GlobalSettings.vue';
 import WaveSurferSettings from './components/WaveSurferSettings.vue';
@@ -49,6 +55,7 @@ export default {
     Sidebar,
     LoadFile,
     WaveSurfer,
+    ExportingUI,
     VideoDisplay,
     GlobalSettings,
     WaveSurferSettings,
@@ -59,7 +66,12 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(['activeTheme', 'activeSetting', 'fileUrl']),
+    ...mapGetters([
+      'activeTheme',
+      'activeSetting',
+      'fileUrl',
+      'showExportingUI',
+    ]),
   },
 };
 </script>

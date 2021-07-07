@@ -24,6 +24,9 @@ export default createStore({
     silencePadding: 0,
     silenceSensitivity: 0.1,
     removedRegions: [],
+
+    // Exporting
+    showExportingUI: false,
   },
   mutations: {
     setFileUrl(state, fileUrl) {
@@ -70,6 +73,9 @@ export default createStore({
       const region = state.removedRegions.pop();
       return region;
     },
+    setShowExportingUI(state, showExportingUI) {
+      state.showExportingUI = showExportingUI;
+    },
   },
   getters: {
     fileUrl(state) {
@@ -109,6 +115,9 @@ export default createStore({
       // INSIGHT: get a clone of the object for watcher
       // return Object.assign({}, state.removedRegions);
       return _.cloneDeep(state.removedRegions);
+    },
+    showExportingUI(state) {
+      return state.showExportingUI;
     },
   },
   actions: {},

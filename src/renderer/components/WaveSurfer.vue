@@ -79,9 +79,13 @@ export default {
       });
       region.remove();
     });
+
+    window.ipc.on('EXPORT_STARTED', () => {
+      this.setShowExportingUI(true);
+    });
   },
   methods: {
-    ...mapMutations(['storeRemovedRegion']),
+    ...mapMutations(['storeRemovedRegion', 'setShowExportingUI']),
 
     recalculateSilentRegions() {
       this.waveSurfer.clearRegions();
@@ -296,6 +300,7 @@ export default {
         filePath: this.filePath,
         duration: this.waveSurfer.getDuration(),
         silentRegions: _.cloneDeep(silentRegions),
+        exportType: this.isAudioFile() ? 'exportAudio' : 'exportVideo',
       });
     },
     createWaveSurfer() {
@@ -381,6 +386,8 @@ export default {
       'silencePadding',
       'silenceSensitivity',
       'removedRegions',
+      // TODO V2: Ensure that users can still remove regions
+      // 'showExportingUI',
     ]),
   },
   watch: {

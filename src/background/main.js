@@ -38,6 +38,9 @@ async function createWindow() {
   }
 }
 
+import _ from 'lodash';
+let command;
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
@@ -47,9 +50,18 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('quit', () => {
+  // TODO V2: kill ffmpeg better?
+  if (!_.isEmpty(command)) {
+    console.log('Ffmpeg has been stopped.');
+    command.kill();
+  } else {
+    console.log('Safely closed the app.');
+  }
+});
+
 /* ================================================================ */
 /* ================================================================ */
-import _ from 'lodash';
 import ffmpeg from 'fluent-ffmpeg';
 import ffmpegPath from '@ffmpeg-installer/ffmpeg';
 import { ipcMain, Menu, dialog } from 'electron';
@@ -130,6 +142,15 @@ const getRegionsToClip = (silentRegions, videoLength) => {
   return regionsToClip;
 };
 
+const getVideoAudioFilter = (regionsToClip) => {
+  const videoAudioFilterArray = [];
+  _.each(regionsToClip, (region) => {
+    videoAudioFilterArray.push(`between(t,${region.start},${region.end})`);
+  });
+  const videoAudioFilter = videoAudioFilterArray.join('+');
+  return videoAudioFilter;
+};
+
 ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   const template = [
     {
@@ -143,15 +164,6 @@ ipcMain.on('REGION_CONTEXT_MENU', (event, payload) => {
   menu.popup(BrowserWindow.fromWebContents(event.sender));
 });
 
-const getVideoAudioFilter = (regionsToClip) => {
-  const videoAudioFilterArray = [];
-  _.each(regionsToClip, (region) => {
-    videoAudioFilterArray.push(`between(t,${region.start},${region.end})`);
-  });
-  const videoAudioFilter = videoAudioFilterArray.join('+');
-  return videoAudioFilter;
-};
-
 ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   const filePath = dialog.showSaveDialogSync(win);
   if (_.isEmpty(filePath)) {
@@ -164,24 +176,46 @@ ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   const mergedSilentRegions = getMergedSilentRegions(silentRegions);
   const regionsToClip = getRegionsToClip(mergedSilentRegions, videoLength);
   const videoAudioFilter = getVideoAudioFilter(regionsToClip);
-  console.log({
-    originalFilePath,
-    videoLength,
-    silentRegions,
-    mergedSilentRegions,
-    regionsToClip,
-    videoAudioFilter,
-  });
+  // console.log({
+  //   originalFilePath,
+  //   videoLength,
+  //   silentRegions,
+  //   mergedSilentRegions,
+  //   regionsToClip,
+  //   videoAudioFilter,
+  // });
 
   if (payload.exportType === 'exportVideo') {
     const pathToOutputFile = filePath.concat('.mp4');
-    ffmpeg(originalFilePath)
+    command = ffmpeg(originalFilePath)
+      .on('start', () => {
+        event.reply('EXPORT_STARTED');
+      })
+      .on('progress', (progress) => {
+        event.reply('EXPORT_PROGRESS', {
+          percent: progress.percent,
+        });
+      })
+      .on('end', () => {
+        event.reply('EXPORT_COMPLETE');
+      })
       .videoFilters([`select='${videoAudioFilter}'`, 'setpts=N/FRAME_RATE/TB'])
       .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
       .save(pathToOutputFile);
   } else {
     const pathToOutputFile = filePath.concat('.mp3');
-    ffmpeg(originalFilePath)
+    command = ffmpeg(originalFilePath)
+      .on('start', () => {
+        event.reply('EXPORT_STARTED');
+      })
+      .on('progress', (progress) => {
+        event.reply('EXPORT_PROGRESS', {
+          percent: progress.percent,
+        });
+      })
+      .on('end', () => {
+        event.reply('EXPORT_COMPLETE');
+      })
       .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
       .save(pathToOutputFile);
   }
