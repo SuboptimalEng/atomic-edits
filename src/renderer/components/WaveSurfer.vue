@@ -64,6 +64,8 @@ export default {
       // INSIGHT: dynamically call vue methods => this[command.name]()
       hotkeys(keybinding, () => this[command.name]());
     });
+    // TODO: Prevent cmd+r, ctrl+r from refreshing the browser.
+    hotkeys('cmd+r,ctrl+r', (event) => event.preventDefault());
 
     window.ipc.on('REMOVE_REGION', (payload) => {
       const region = this.waveSurfer.regions.list[payload.regionId];
