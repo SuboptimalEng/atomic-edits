@@ -1,7 +1,7 @@
 module.exports = {
   configureWebpack: {
-    // TODO: Hide this
-    devtool: 'source-map',
+    // TODO: Hide source maps this
+    // devtool: 'source-map',
   },
   pluginOptions: {
     electronBuilder: {
