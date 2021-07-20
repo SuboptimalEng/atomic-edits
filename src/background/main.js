@@ -176,16 +176,38 @@ ipcMain.on('EXPORT_AUDIO_OR_VIDEO', (event, payload) => {
   const mergedSilentRegions = getMergedSilentRegions(silentRegions);
   const regionsToClip = getRegionsToClip(mergedSilentRegions, videoLength);
   const videoAudioFilter = getVideoAudioFilter(regionsToClip);
-  // console.log({
-  //   originalFilePath,
-  //   videoLength,
-  //   silentRegions,
-  //   mergedSilentRegions,
-  //   regionsToClip,
-  //   videoAudioFilter,
-  // });
+  console.log({
+    originalFilePath,
+    videoLength,
+    silentRegions,
+    mergedSilentRegions,
+    regionsToClip,
+    videoAudioFilter,
+  });
 
-  if (payload.exportType === 'exportVideo') {
+  let a = true;
+
+  // testing
+  if (a) {
+    _.each(regionsToClip, (region, idx) => {
+      let fileName = `file_${idx}.mp3`;
+      const pathName = path.dirname(originalFilePath);
+      ffmpeg(originalFilePath).addInputOptions([
+        '-ss 00:00:02',
+        '-to 00:00:04',
+      ]);
+      // .seekInput(region.start)
+      // .duration(region.end - region.start)
+      // .audioCodec('copy')
+      // .save(pathName + '/' + fileName);
+    });
+    // command = ffmpeg(originalFilePath)
+    //   .on('start', () => {
+    //     event.reply('EXPORT_STARTED');
+    //   })
+    //   // .audioFilters([`aselect='${videoAudioFilter}'`, 'asetpts=N/SR/TB'])
+    //   .save(pathToOutputFile);
+  } else if (payload.exportType === 'exportVideo') {
     const pathToOutputFile = filePath.concat('.mp4');
     command = ffmpeg(originalFilePath)
       .on('error', function(err) {
