@@ -8,7 +8,7 @@
 ## Demos
 
 - [1 Minute Demo - Original Reddit Post](https://www.reddit.com/r/webdev/comments/ohbl6i/i_made_a_desktop_app_that_automatically_detects/)
-- [8 Minute Explanation - YouTube Video](https://www.youtube.com/watch?v=8N5SWcf3DYg)
+- [8 Minute Explanation - YouTube Video](https://www.youtube.com/watch?v=8N5SWcf3DYg&t=89s)
 
 ## Project Setup
 
