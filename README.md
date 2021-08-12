@@ -5,6 +5,11 @@
 - I've shelved this project (for now) and am currently working on another startup idea.
 - Follow me on [Twitter](twitter.com/SuboptimalEng) for more updates and dank memes!
 
+## Demos
+
+- [Original Reddit Post](https://www.reddit.com/r/webdev/comments/ohbl6i/i_made_a_desktop_app_that_automatically_detects/)
+- [8 Minute YouTube Explanation](https://www.youtube.com/watch?v=8N5SWcf3DYg)
+
 ## How to run the project.
 
 ```
