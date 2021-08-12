@@ -1,4 +1,4 @@
-# AtomicEdits
+# 🤖 AtomicEdits
 
 ## Disclaimer
 
