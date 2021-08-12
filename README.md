@@ -1,35 +1,44 @@
-# Atomic Edits
+# AtomicEdits
 
-## Project setup
+## Disclaimer
+
+- I've shelved this project (for now) and am currently working on another startup idea.
+- Follow me on [Twitter](twitter.com/SuboptimalEng) for more updates and dank memes!
+
+## How to run the project.
 
 ```
 npm install
+npm run electron:serve
 ```
 
-### Compiles and hot-reloads for development
+## Why Make AtomicEdits?
 
-```
-npm run serve
-```
+In 2020, I quit my tech job to pursue creating content on [YouTube](youtube.com/SuboptimalEng) full-time.
+The biggest problem I had with making videos was editing/removing silence from them.
+(For reference, it takes 1-2 hours to edit 10 minutes of video.) I put aside 2-3 weeks in June to learn video
+editing technologies (WaveSurfer.js + FFmpeg) and make a proof of concept - this is the result.
+It's really rough around the edges, but saves me some time while editing.
 
-### Compiles and minifies for production
+## Why Open Source My Product?
 
-```
-npm run build
-```
+I was originally planning on selling this as a digital product (for \$10-20) since I haven't made much money
+after leaving my tech job, but I found another idea worth pursuing. I haven't touched this project in a month
+and figured open sourcing it can help others who may want to take this further.
 
-### Run your unit tests
+## Main Features:
 
-```
-npm run test:unit
-```
+- Automatically detect silence in the video
+- Generate silent regions based on length and loudness
+- Remove detected silent regions on export
+- Add/remove padding to silent regions
 
-### Lints and fixes files
+## Tech Stack:
 
-```
-npm run lint
-```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Vue/Vuex
+- Font Awesome (icons)
+- Tailwind CSS (core UI)
+- Electron.js (desktop app)
+- WaveSurfer.js (audio wave display)
+- Fluent FFmpeg (export edited video)
+- Hotkeys (keyboard shortcuts)
