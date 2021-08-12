@@ -5,8 +5,9 @@
 - I've shelved this project (for now) and am currently working on another startup idea.
 - Follow me on [Twitter](twitter.com/SuboptimalEng) for more updates and dank memes!
 
-## Image (For those that just want a 1 second glimpse)
-<img src="https://user-images.githubusercontent.com/70355008/129230692-ba7d7928-16c9-421d-8117-ea7a529f35ca.png" width="400">
+## Image (for those who just want a quick glimpse)
+
+<img src="/demo/atomic_edits" width="600">
 
 ## Video Demos
 
