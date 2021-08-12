@@ -33,7 +33,7 @@ It's really rough around the edges, but saves me some time while editing.
 
 I was originally planning on selling this as a digital product (for \$10-20) since I haven't made much money
 after leaving my tech job, but I found another idea worth pursuing. I haven't touched this project in a month
-and figured open sourcing it can help others who may want to take this further.
+and figured that open sourcing it can help others who may want to take this further.
 
 ## Main Features
 
