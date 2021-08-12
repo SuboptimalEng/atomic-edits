@@ -31,14 +31,14 @@ I was originally planning on selling this as a digital product (for \$10-20) sin
 after leaving my tech job, but I found another idea worth pursuing. I haven't touched this project in a month
 and figured open sourcing it can help others who may want to take this further.
 
-## Main Features:
+## Main Features
 
 - Automatically detect silence in the video
 - Generate silent regions based on length and loudness
 - Remove detected silent regions on export
 - Add/remove padding to silent regions
 
-## Tech Stack:
+## Tech Stack
 
 - Vue/Vuex
 - Font Awesome (icons)
