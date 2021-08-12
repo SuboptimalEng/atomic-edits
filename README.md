@@ -7,7 +7,7 @@
 
 ## Image (for those who just want a quick glimpse)
 
-<img src="demo/atomic_edits" width="600">
+<img src="/demo/atomic_edits.png" width="600">
 
 ## Video Demos
 
