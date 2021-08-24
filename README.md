@@ -51,3 +51,6 @@ and figured that open sourcing it can help others who may want to take this furt
 - WaveSurfer.js (audio wave display)
 - Fluent FFmpeg (export edited video)
 - Hotkeys (keyboard shortcuts)
+
+## Resources
+- [Vue + Electron Setup Guide](https://medium.com/swlh/how-to-safely-set-up-an-electron-app-with-vue-and-webpack-556fb491b83)
