@@ -53,4 +53,4 @@ and figured that open sourcing it can help others who may want to take this furt
 - Hotkeys (keyboard shortcuts)
 
 ## Resources
-- [Vue + Electron Setup Guide](https://medium.com/swlh/how-to-safely-set-up-an-electron-app-with-vue-and-webpack-556fb491b83)
+- [Vue + Electron Setup Guide on Medium](https://medium.com/swlh/how-to-safely-set-up-an-electron-app-with-vue-and-webpack-556fb491b83)
