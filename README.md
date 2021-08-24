@@ -1,4 +1,4 @@
-# 🎬 AtomicEdits [Downloadable DMG](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
+# 🎬 AtomicEdits -> [Downloadable DMG File](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
 
 ## Disclaimer
 
