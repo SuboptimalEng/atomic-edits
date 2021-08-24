@@ -21,6 +21,9 @@ npm install
 npm run electron:serve
 ```
 
+## Helpful Resources
+- [Vue + Electron Setup Guide on Medium](https://medium.com/swlh/how-to-safely-set-up-an-electron-app-with-vue-and-webpack-556fb491b83)
+
 ## Why Make AtomicEdits?
 
 In 2020, I quit my tech job to pursue creating content on [YouTube](youtube.com/SuboptimalEng) full-time.
@@ -51,6 +54,3 @@ and figured that open sourcing it can help others who may want to take this furt
 - WaveSurfer.js (audio wave display)
 - Fluent FFmpeg (export edited video)
 - Hotkeys (keyboard shortcuts)
-
-## Resources
-- [Vue + Electron Setup Guide on Medium](https://medium.com/swlh/how-to-safely-set-up-an-electron-app-with-vue-and-webpack-556fb491b83)
