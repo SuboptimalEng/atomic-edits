@@ -3,7 +3,7 @@
 ## Disclaimer
 
 - I've shelved this project (for now) and am currently working on another startup idea.
-- Follow me on [Twitter](twitter.com/SuboptimalEng) for more updates and dank memes 👀
+- Follow me on [Twitter](https://twitter.com/SuboptimalEng) for more updates and dank memes 👀
 
 ## Image (for those who just want a quick glimpse)
 
