@@ -1,8 +1,8 @@
-# 🎬 AtomicEdits -> [Downloadable DMG File](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
+# 🎬 AtomicEdits
 
 ## Disclaimer
 
-- I've shelved this project (for now) and am currently working on another startup idea.
+- I've shelved this project (for now) and am currently working on [gamedex](https://github.com/SuboptimalEng/gamedex)
 - Follow me on [Twitter](https://twitter.com/SuboptimalEng) for more updates and dank memes 👀
 
 ## Image (for those who just want a quick glimpse)
@@ -16,6 +16,8 @@
 
 ## Project Setup
 
+- [Downloadable DMG File](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
+- Running the project locally
 ```
 npm install
 npm run electron:serve
