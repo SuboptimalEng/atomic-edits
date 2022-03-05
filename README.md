@@ -16,8 +16,8 @@
 
 ## Project Setup
 
-- [Downloadable DMG File](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
-- Running the project locally
+- If you have a Mac, you can download the [DMG File](https://github.com/SuboptimalEng/AtomicEdits/tree/master/downloads)
+- You can also run the the project via NPM:
 ```
 npm install
 npm run electron:serve
