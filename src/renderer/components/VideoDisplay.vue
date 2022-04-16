@@ -1,7 +1,7 @@
 <template>
   <div class="h-full bg-black">
     <div class="flex flex-col h-full place-items-center justify-center">
-      <fa v-if="isAudioFile()" icon="headphones" class="text-9xl" />
+      <fa v-if="isAudioFile()" icon="headphones" class="text-9xl pr-10" />
       <video
         :src="fileUrl"
         id="video-display-element"

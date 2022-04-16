@@ -8,10 +8,10 @@
   .theme-light {
     --black: #000000;
     --primary: #f3f4f6;
-    --secondary: #111827;
-    --primary-hover: #9ca3af;
+    --secondary: #f3f4f6;
+    --primary-hover: #4b5563;
     --ws-wave-color: #6b7280;
-    --ws-silent-color: #ef4444;
+    --ws-progress-color: #f3f4f6;
   }
 
   .theme-dark {
@@ -19,10 +19,12 @@
     --black: #000000;
 
     /* gray 900 */
-    --primary: #111827;
+    /* --primary: #111827; */
+    --primary: #000000;
 
     /* gray 100 */
-    --secondary: #f3f4f6;
+    /* --secondary: #f3f4f6; */
+    --secondary: #ffffff;
 
     /* gray 600 */
     --primary-hover: #4b5563;
@@ -31,7 +33,8 @@
     --ws-wave-color: #6b7280;
 
     /* gray 100; --secondary */
-    --ws-progress-color: #f3f4f6;
+    /* --ws-progress-color: #f3f4f6; */
+    --ws-progress-color: #ffffff;
 
     /* red 500 */
     /* --ws-silent-region-color: #ef4444; */
